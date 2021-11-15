@@ -74,3 +74,15 @@ export const destroy = async (req: Request, res: Response): Promise<void> => {
         });
     }
 }
+
+export const coba = async (req: Request, res: Response): Promise<void> => {
+    try {
+        res.render('index', {
+            apiID: 'TEST',
+            apiKey: 'TEST',
+            roomName: 'coba'
+        });
+    } catch (error) {
+        
+    }
+}

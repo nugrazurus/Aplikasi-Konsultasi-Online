@@ -16,6 +16,10 @@
         roomName: roomName,
         width: '100%',
         height: '100%',
+        userInfo: {
+          email: 'nugrazurus@untan.ac.id',
+          displayName: 'nugra'
+        },
         container: document.querySelector("#videoconf"),
         interfaceConfigOverwrite: {
           TOOLBAR_BUTTONS: [
@@ -23,16 +27,30 @@
             "camera",
             "desktop",
             "fullscreen",
-            "hangup"
+            "hangup",
+            "chat",
+            "tileview",
+            "stats",
+            "videoquality",
+            "raisehand",
+            "settings",
+            "participant-count",
+            "videobackgroundblur",
+            "mute-everyone"
         ]},
         initialSetup: { 
           startWithAudioMuted: true,
           startWithVideoMuted: true 
         },
-        apiID: 'TEST',
-        apiKey: 'TEST',
+        // apiID: 'TEST',
+        // apiKey: 'TEST',
+        apiID: apiID,
+        apiKey: apiKey,
       };
       const api = new IFrameVideoAPI(options);
+      api.subscribeEvent(api.Events.PARTICIPANT_JOINED, function(e) {
+        console.log(e.displayName + ' (' + e.id +') joined')
+      })
     </script>
   </body>
 </html>

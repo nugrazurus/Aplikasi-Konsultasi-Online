@@ -21,7 +21,6 @@ interface User {
 }
 
 const generateToken = (user:User) => {
-    console.log(user)
     const jwtExp: number = parseInt(process.env.JWT_EXPIRATION_IN_MINUTES);
     const expiration: number = Math.floor(Date.now() / 1000) + 60 * jwtExp;
     const token = jwt.sign({
@@ -38,8 +37,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const response = await axios.get(`${process.env.SIAKAD_ENDPOINT}/loginmhs/${username}/X${password}`)
         .then(res => {
             delete res.data.result[0].passwd;
-            const data: User = res.data.result[0];
-            return generateToken(data)
+            const data = res.data.result[0];
+            if (data.idmhs === '0') {
+                return null
+            } else {
+                return generateToken(data)
+            }
         })
         .catch(err => {
             console.error(err);
@@ -52,7 +55,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
                 token: response
             });
         } else {
-            res.json({ status: false, message: response});
+            res.json({ status: false, message: 'username atau password anda salah'});
         }
 
     } catch (error) {
