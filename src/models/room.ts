@@ -1,18 +1,22 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 interface Room {
-    roomName: string;
-    roomUrl: string;
-    startTime: Date;
+  roomName: string;
+  roomUrl: string;
+  startTime: Date;
 }
 
-const roomSchema = new Schema<Room>({
-    roomName: {type: String, required: true},
-    roomUrl: {type: String, required: true},
-    startTime: {type: Date, required: true},
-},{
-    timestamps: true
-})
+const roomSchema = new Schema(
+  {
+    roomName: { type: String, required: true },
+    roomUrl: { type: String, required: true },
+    startTime: { type: Date, required: true },
+    nimDosen: { type: String, required: true },
+    nimMahasiswa: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  },
+);
 
-const RoomModel = model<Room>("Room", roomSchema)
-export {RoomModel}
+export default mongoose.model<Room>('Room', roomSchema);

@@ -1,30 +1,58 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 interface Logbook {
-    date: Date,
-    periode: string,
-    periodeId: number,
-    status: string,
-    notes: Note[],
-    attachments: Attachment[]
+  date: Date;
+  semester: string;
+  status: string;
+  notes: Note[];
+  action: Action[];
+  attachments: Attachment[];
+  supervisorComment: string;
+  verifiedBy: string;
+  dateVerified: Date;
 }
 
 interface Note {
-    title: string,
-    content: string
+  title: string;
+  content: string;
+}
+
+interface Action {
+  title: string;
+  content: string;
 }
 
 interface Attachment {
-    title: string,
-    file: string
-    
+  file: string;
+  originalName: string;
+  originalExt: string;
 }
 
-const logbookSchema = new Schema<Logbook>({
-    date: {type: Date, required: true},
-},{
-    timestamps: true
-})
+const logbookSchema: Schema = new Schema(
+  {
+    date: { type: Date, required: true },
+    semester: { type: String, required: true },
+    status: { type: String, required: true },
+    notes: {
+      title: String,
+      content: String,
+    },
+    actions: {
+      title: String,
+      content: String,
+    },
+    attachments: {
+      file: String,
+      originalName: String,
+      originalExt: String,
+    },
+    supervisorComment: String,
+    veridifiedBy: String,
+    dateVerified: Date,
+  },
+  {
+    timestamps: true,
+  },
+);
 
-const LogbookModel = model<Logbook>("Logbook", logbookSchema)
-export {LogbookModel}
+export default mongoose.model<Logbook>('Logbook', logbookSchema);

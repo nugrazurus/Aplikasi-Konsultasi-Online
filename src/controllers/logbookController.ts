@@ -1,19 +1,25 @@
+import Logbook from '../models/logbook';
 import { Request, Response } from 'express';
-import Room from '../models/room';
 
 export const index = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.render('index', {});
-  } catch (error) {}
+    const logbook = await Logbook.find({}).sort([['createdAt', -1]]);
+    res.json({
+      status: true,
+      message: 'success',
+      data: logbook,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
 };
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const create = await Room.create({
-      roomName: req.body.roomName,
-      roomUrl: req.body.roomUrl,
-      startTime: Date.now(),
-    });
+    const create = await Logbook.create(req.body);
     res.json({
       status: true,
       message: 'success',
@@ -27,36 +33,9 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const show = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const read = await Room.findOne({
-      roomName: req.params.roomName,
-    });
-    res.json({
-      status: true,
-      message: 'success',
-      data: read,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: false,
-      message: error.message,
-    });
-  }
-};
-
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const roomName = req.params.roomName;
-    const roomNameUpdate = req.body.roomName;
-    const roomUrlUpdate = req.body.roomUrl;
-    const update = await Room.updateOne(
-      { roomName: roomName },
-      {
-        roomName: roomNameUpdate,
-        roomUrl: roomUrlUpdate,
-      },
-    );
+    const update = await Logbook.findOneAndUpdate({ _id: req.body.id }, req.body);
     res.json({
       status: true,
       message: 'success',
@@ -72,9 +51,11 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 
 export const destroy = async (req: Request, res: Response): Promise<void> => {
   try {
+    const destroy = await Logbook.deleteOne({ _id: req.body.id });
     res.json({
       status: true,
       message: 'success',
+      data: destroy,
     });
   } catch (error) {
     res.status(500).json({
@@ -82,14 +63,4 @@ export const destroy = async (req: Request, res: Response): Promise<void> => {
       message: error.message,
     });
   }
-};
-
-export const coba = async (req: Request, res: Response): Promise<void> => {
-  try {
-    res.render('index', {
-      apiID: 'TEST',
-      apiKey: 'TEST',
-      roomName: 'coba',
-    });
-  } catch (error) {}
 };
