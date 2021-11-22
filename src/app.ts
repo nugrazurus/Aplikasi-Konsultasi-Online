@@ -26,9 +26,9 @@ app.use(
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 
-app.use('/', indexRoute);
 app.use('/api', apiRoute);
 app.use('/room', roomRoute);
+app.use('/', indexRoute);
 app.use(cors());
 app.use(compressions());
 app.use(helmet());
