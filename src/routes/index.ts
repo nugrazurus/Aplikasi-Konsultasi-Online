@@ -12,6 +12,9 @@ index.get('/logbook', (req: Request, res: Response) => {
 index.get('/logbook/detail', (req: Request, res: Response) => {
   res.status(200).render('logbook-detail');
 });
+index.get('/konsultasi', (req: Request, res: Response) => {
+  res.status(200).render('konsultasi');
+});
 index.post('/login', authController.login);
 index.use('*', (req: Request, res: Response) => {
   res.status(404).render('_404');

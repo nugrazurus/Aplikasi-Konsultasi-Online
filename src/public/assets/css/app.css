@@ -4,6 +4,9 @@ body{
 p{
     margin: 0;
 }
+b{
+    font-weight: 600;
+}
 .document{
     background-position: center;
     background-repeat: no-repeat;
@@ -77,4 +80,22 @@ p{
 }
 .card-mahasiswa{
     width: 278px;
+}
+.accordion-button{
+    border-radius: 10px !important;
+}
+.accordion-item{
+    border-radius: 10px !important;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important
+}
+.icli{
+    font-size: 28px;
+    color: #E1E1E1;
+}
+.icbo{
+    font-size: 28px;
+    color: #48C39F;
+}
+.main{
+    margin-left: 100px;
 }

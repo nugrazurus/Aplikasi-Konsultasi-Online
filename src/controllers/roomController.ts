@@ -86,7 +86,7 @@ export const destroy = async (req: Request, res: Response): Promise<void> => {
 
 export const coba = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.render('index', {
+    res.render('ngage', {
       apiID: 'TEST',
       apiKey: 'TEST',
       roomName: 'coba',
