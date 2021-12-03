@@ -28,3 +28,18 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     next();
   });
 };
+
+export const redirectIfAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+  const token = `${req.cookies.AuthToken}`;
+  if (!token) {
+    return res.redirect('/login');
+  }
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err || decoded.data.role !== 'dosen') {
+      res.clearCookie('AuthToken');
+      return res.redirect('/login');
+    }
+    console.log(decoded);
+    next();
+  });
+};

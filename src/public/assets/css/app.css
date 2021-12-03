@@ -1,101 +1,114 @@
-body{
-    font-family: Poppins, 'sans-serif';
+body {
+  font-family: Poppins, 'sans-serif';
 }
-p{
-    margin: 0;
+p {
+  margin: 0;
 }
-b{
-    font-weight: 600;
+b {
+  font-weight: 600;
 }
-.document{
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(/static/assets/img/Document.svg);
+.document {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(/static/assets/img/Document.svg);
 }
-.video{
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(/static/assets/img/Video.svg);
+.video {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(/static/assets/img/Video.svg);
 }
-.home{
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(/static/assets/img/Home.svg);
+.home {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(/static/assets/img/Home.svg);
 }
-.document:hover{
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(/static/assets/img/Document-active.svg);
+.document:hover {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(/static/assets/img/Document-active.svg);
 }
-.video:hover{
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(/static/assets/img/Video-active.svg);
+.video:hover {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(/static/assets/img/Video-active.svg);
 }
-.home:hover{
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(/static/assets/img/Home-active.svg);
+.home:hover {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(/static/assets/img/Home-active.svg);
 }
-.btn-light{
-    border: none;
-    background-color: transparent;
+.btn-light {
+  border: none;
+  background-color: transparent;
 }
-.btn-card{
-    border-radius: 0 0 10px 10px;
-    color: #fff;
-    background-color: #48C39F;
+.btn-card {
+  border-radius: 0 0 10px 10px;
+  color: #fff;
+  background-color: #48c39f;
 }
-.card{
-    border-radius: 15px;
-    overflow: hidden;
+.card {
+  border-radius: 15px;
+  overflow: hidden;
 }
-.bimbingan .card .content{
-    transition: 0.5s;
+.bimbingan .card .content {
+  transition: 0.5s;
 }
-.bimbingan .card:hover{
-    border: 1px solid #48C39F;
+.bimbingan .card:hover {
+  border: 1px solid #48c39f;
 }
-.bimbingan .card:hover .content{
-    transform: translateY(-20px);
+.bimbingan .card:hover .content {
+  transform: translateY(-20px);
 }
-.bimbingan .card .btn{
-    transform: translateY(40px);
-    transition: 0.5s;
-    opacity: 0;
+.bimbingan .card .btn {
+  transform: translateY(40px);
+  transition: 0.5s;
+  opacity: 0;
 }
-.bimbingan .card:hover .btn{
-    transform: translateY(0px);
-    opacity: 1;
+.bimbingan .card:hover .btn {
+  transform: translateY(0px);
+  opacity: 1;
 }
-.btn-card:hover{
-    color: white;
+.btn-card:hover {
+  color: white;
 }
-.title{
-    font-weight: 600;
-    margin: 0;
+.title {
+  font-weight: 600;
+  margin: 0;
 }
-.konsul .card:hover{
-    border: 1px solid #48C39F;
+.konsul .card:hover {
+  border: 1px solid #48c39f;
 }
-.card-mahasiswa{
-    width: 278px;
+.card-mahasiswa {
+  width: 270px;
 }
-.accordion-button{
-    border-radius: 10px !important;
+.accordion-button {
+  border-radius: 10px !important;
 }
-.accordion-item{
-    border-radius: 10px !important;
-    border: 1px solid rgba(0, 0, 0, 0.125) !important
+.accordion-item {
+  border-radius: 10px !important;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
-.icli{
-    font-size: 28px;
-    color: #E1E1E1;
+.icli {
+  font-size: 28px;
+  color: #e1e1e1;
 }
-.icbo{
-    font-size: 28px;
-    color: #48C39F;
+.icbo {
+  font-size: 28px;
+  color: #48c39f;
 }
-.main{
-    margin-left: 100px;
+.main {
+  margin-left: 100px;
+}
+.image-cropper {
+  width: 80px;
+  height: 80px;
+  /* position: relative; */
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.image-cropper img {
+  display: inline;
+  margin: 0 auto;
+  width: 80px;
 }

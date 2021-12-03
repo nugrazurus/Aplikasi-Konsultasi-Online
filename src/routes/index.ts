@@ -1,23 +1,42 @@
+import axios from 'axios';
 import { Router, Request, Response } from 'express';
 // import * as controller from '../controllers/indexController';
 import * as authController from '../controllers/authController';
-const index = Router();
+const router = Router();
 
-index.get('/', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
   res.status(200).render('index');
 });
-index.get('/logbook', (req: Request, res: Response) => {
+router.get('/logbook', (req: Request, res: Response) => {
   res.status(200).render('logbook');
 });
-index.get('/logbook/detail', (req: Request, res: Response) => {
+router.get('/logbook/detail', (req: Request, res: Response) => {
   res.status(200).render('logbook-detail');
 });
-index.get('/konsultasi', (req: Request, res: Response) => {
+router.get('/konsultasi', (req: Request, res: Response) => {
   res.status(200).render('konsultasi');
 });
-index.post('/login', authController.login);
-index.use('*', (req: Request, res: Response) => {
+router.get('/login', (req: Request, res: Response) => {
+  res.status(200).render('login');
+});
+router.get('/pic/:nim', async (req: Request, res: Response) => {
+  const img = await axios
+    .get(`http://servicedpna.untan.ac.id/mhs/getpicbynim/${req.params.nim}`, { responseType: 'arraybuffer' })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+  res.writeHead(200, {
+    'Content-Type': 'image/jpeg',
+    // 'Content-Length': img.length
+  });
+  res.end(img);
+});
+router.post('/login', authController.loginServerSide);
+router.use('*', (req: Request, res: Response) => {
   res.status(404).render('_404');
 });
 
-export default index;
+export default router;

@@ -7,7 +7,7 @@ export const getBimbinganPA = async (iddosen: number, periode: number) => {
       return res.data;
     })
     .catch((err) => {
-      return err;
+      return err.response;
     });
 };
 
@@ -18,7 +18,7 @@ export const loginSiakadMahasiswa = async (username: string, password: string) =
       return res.data;
     })
     .catch((err) => {
-      return err;
+      return err.response;
     });
 };
 
@@ -29,6 +29,6 @@ export const loginSiakadDosen = async (username: string, password: string) => {
       return res.data;
     })
     .catch((err) => {
-      return err;
+      return err.response;
     });
 };

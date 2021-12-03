@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import { loginSiakadDosen, loginSiakadMahasiswa } from '../service/siakad';
 
 interface User {
   idmhs: number;
@@ -32,8 +33,59 @@ const generateToken = (user: User) => {
       expiresIn: expiration,
     },
   );
-  return `Bearer ${token}`;
+  return token;
 };
+
+export const loginServerSide = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { username, password, role } = req.body;
+    let response;
+    switch (role) {
+      case 'mahasiswa':
+        response = await loginSiakadMahasiswa(username, password);
+        if (response.result[0].idmhs !== '0') {
+          const data = response.result[0];
+          data.role = 'mahasiswa';
+          delete data.passwd;
+          res.cookie('AuthToken', generateToken(data));
+          res.status(200).render('index');
+        } else {
+          res.status(200).json({
+            status: false,
+            message: 'Username atau password anda salah',
+          });
+        }
+        break;
+      case 'dosen':
+        response = await loginSiakadDosen(username, password);
+        if (!response.result) {
+          throw new Error(response.data.error);
+        }
+        if (response.result[0].stat !== 'gagal') {
+          const data = response.result[0];
+          data.nip = username;
+          data.role = 'dosen';
+          res.cookie('AuthToken', generateToken(data));
+          res.status(200).redirect('dosen');
+        } else {
+          console.log(response);
+          res.status(200).json({
+            status: false,
+            message: 'Username atau password anda salah',
+          });
+        }
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const username: string = req.body.username;
@@ -64,6 +116,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       });
     } else {
       res.json({ status: false, message: 'username atau password anda salah' });
+      res.redirect('/');
     }
   } catch (error) {
     console.error(error);
@@ -72,4 +125,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       message: error,
     });
   }
+};
+
+export const logout = async (req: Request, res: Response): Promise<void> => {
+  res.clearCookie('AuthToken');
+  res.redirect('/');
 };
