@@ -5,7 +5,7 @@ import * as authController from '../controllers/authController';
 const router = Router();
 
 router.get('/', (req: Request, res: Response) => {
-  res.status(200).render('index');
+  res.redirect('/login');
 });
 router.get('/logbook', (req: Request, res: Response) => {
   res.status(200).render('logbook');
@@ -35,6 +35,7 @@ router.get('/pic/:nim', async (req: Request, res: Response) => {
   res.end(img);
 });
 router.post('/login', authController.loginServerSide);
+router.get('/logout', authController.logout);
 router.use('*', (req: Request, res: Response) => {
   res.status(404).render('_404');
 });

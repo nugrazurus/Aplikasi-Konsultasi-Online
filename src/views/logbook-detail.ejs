@@ -1,21 +1,23 @@
 <%- include('_partial/head') %>
 <body>
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row main">
         <%- include('_partial/sidebar') %> 
         <div class="container-fluid mx-4 my-4">
-            <%- include('_partial/navbar', {title: 'Logbook', tanggal:'4 Desember 2021'}) %>
+            <%- include('_partial/navbar', {title: 'Logbook', tanggal: tanggal}) %>
             <div class="d-flex flex-column mb-4">
-                <p class="title">Logbook Archil Khun</p>
-                <p class="text-muted">Berikut adalah data logbook untuk mahasiswa Archil Khun</p>
+                <p class="title">Logbook <%- mhs.nama %> </p>
+                <p class="text-muted">Berikut adalah data logbook untuk mahasiswa <%- mhs.nama %> </p>
                 <div class="row">
                     <div class="col-3">
                         <div class="d-flex flex-column w-100 align-items-center px-4 py-4 mb-4" style="color: white; background-color: #48C39F; border-radius: 10px;">
                             <div class="d-flex justify-content-center align-items-center rounded-circle" style="width: 120px; height: 120px; background-color: white;">
-                                <img src="/static/assets/img/Ellipse 7.png" width="114" height="114" alt="">
+                              <div class="image-cropper" style="width: 116px; height: 116px;">
+                                <img class="mb-2 " style="width: 116px;" src="/pic/<%- mhs.nim %> " alt="">
+                              </div>
                             </div>
-                            <p style="margin: 0; font-weight: 600;">Archil Khun</p>
-                            <p style="margin: 0;">H1051151035</p>
-                            <p style="margin: 0;">Angkatan 2015</p>
+                            <p style="margin: 0; font-weight: 600;"><%- mhs.nama %> </p>
+                            <p style="margin: 0;"><%- mhs.nim %> </p>
+                            <p style="margin: 0;">Angkatan <%- mhs.angkatan %> </p>
                         </div>
                         <div class="card d-flex flex-column px-4 py-4 w-100">
                             <div class="d-flex flex-row justify-content-between align-items-center">
@@ -48,7 +50,7 @@
                     <div class="col-9">
                         <div class="d-flex mb-4">
                             <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
-                                <p>Sesi Ke-1</p>
+                                <a href="#" class="stretched-link">Sesi Ke-1</a>
                             </div>
                             <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
                                 <p>Sesi Ke-1</p>

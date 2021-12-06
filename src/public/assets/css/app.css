@@ -112,3 +112,8 @@ b {
   margin: 0 auto;
   width: 80px;
 }
+
+.card .stretched-link{
+  text-decoration: none;
+  color: black;
+}

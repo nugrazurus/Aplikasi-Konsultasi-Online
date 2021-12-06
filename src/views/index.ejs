@@ -4,12 +4,34 @@
     <div class="d-flex flex-row main">
         <%- include('_partial/sidebar'); %>
         <div class="container-fluid mx-4 my-4">
-            <%- include('_partial/navbar', {title: 'Dashboard', tanggal: 'Minggu, 4 Oktober 2021'}); %>
+            <%- include('_partial/navbar', {title: 'Dashboard', tanggal: tanggal}); %>
             <div class="d-flex flex-column mb-4 bimbingan">
                 <p class="title">Mahasiswa Bimbingan</p>
                 <p class="text-muted">Berikut adalah semua mahasiswa bimbingan anda</p>
-                <div class="row" style="min-height: 350px;">
-                    <div class="col card p-0 mx-2">
+                <div class="d-flex flex-row w-100" style="min-height: 350px; overflow-x: auto;">
+                    <% if (mhs) { %>
+                        <% mhs.forEach(mahasiswa => { %>
+                            <div class="col-2 card p-0 mx-2">
+                                <div class="content d-flex h-100 flex-column justify-content-between align-items-center py-3 pt-4">
+                                    <div class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="image-cropper">
+                                                <img class="mb-2 " src="/pic/<%- mahasiswa.nim %> " alt="">
+                                            </div>
+                                        </div>
+                                        <p class="title"><%- mahasiswa.nama %> </p>
+                                        <p ><%- mahasiswa.nim %> </p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-muted mb-0">Terakhir Konsultasi</p>
+                                        <p class="mb-0">1 Januari 2019</p>
+                                    </div>
+                                </div>
+                                <a href="/dosen/logbook/<%- mahasiswa.nim %> " class="btn btn-card" ">Lihat Detail</a>
+                            </div>
+                        <% }) %>
+                    <% } %>
+                    <!-- <div class="col card p-0 mx-2">
                         <div class="content d-flex h-100 flex-column justify-content-between align-items-center py-3">
                             <div class="text-center">
                                 <img class="mb-2" src="/static/assets/img/Ellipse 7.png" width="80" height="80" alt="">
@@ -78,21 +100,7 @@
                             </div>
                         </div>
                         <button class="btn btn-card" ">Lihat Detail</button>
-                    </div>
-                    <div class="col card p-0 mx-2">
-                        <div class="content d-flex h-100 flex-column justify-content-between align-items-center py-3">
-                            <div class="text-center">
-                                <img class="mb-2" src="/static/assets/img/Ellipse 7.png" width="80" height="80" alt="">
-                                <p class="title">Archil Khun</p>
-                                <p >H1051151035</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-muted mb-0">Terakhir Konsultasi</p>
-                                <p class="mb-0">1 Januari 2019</p>
-                            </div>
-                        </div>
-                        <button class="btn btn-card" ">Lihat Detail</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="d-flex flex-column mb-4">
