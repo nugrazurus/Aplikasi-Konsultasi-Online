@@ -49,7 +49,9 @@ export const logbookDetail = async (req: Request, res: Response): Promise<void> 
 
 export const konsultasi = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.render('konsultasi', { tanggal: tampilTanggal(), role: 'dosen' });
+    const { payload } = jwt.decode(req.cookies.AuthToken, { complete: true });
+    const mhs = await getBimbinganPA(parseInt(payload.data.iddosen), 374);
+    res.render('konsultasi', { tanggal: tampilTanggal(), role: 'dosen', mhs: mhs });
   } catch (error) {
     console.error(error);
     res.status(500).render('_404');

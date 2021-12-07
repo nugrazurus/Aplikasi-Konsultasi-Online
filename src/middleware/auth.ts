@@ -39,6 +39,7 @@ export const redirectIfAuthenticated = (req: Request, res: Response, next: NextF
       res.clearCookie('AuthToken');
       return res.redirect('/login');
     }
+    res.locals.user = decoded;
     next();
   });
 };

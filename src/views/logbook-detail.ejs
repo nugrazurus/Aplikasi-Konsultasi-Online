@@ -6,7 +6,7 @@
             <%- include('_partial/navbar', {title: 'Logbook', tanggal: tanggal}) %>
             <div class="d-flex flex-column mb-4">
                 <p class="title">Logbook <%- mhs.nama %> </p>
-                <p class="text-muted">Berikut adalah data logbook untuk mahasiswa <%- mhs.nama %> </p>
+                <p class="text-muted mb-2">Berikut adalah data logbook untuk mahasiswa <%- mhs.nama %> </p>
                 <div class="row">
                     <div class="col-3">
                         <div class="d-flex flex-column w-100 align-items-center px-4 py-4 mb-4" style="color: white; background-color: #48C39F; border-radius: 10px;">
@@ -19,10 +19,10 @@
                             <p style="margin: 0;"><%- mhs.nim %> </p>
                             <p style="margin: 0;">Angkatan <%- mhs.angkatan %> </p>
                         </div>
-                        <div class="card d-flex flex-column px-4 py-4 w-100">
+                        <div class="card d-flex flex-column px-4 py-4 w-100" style="max-height: 400px; overflow-y: auto;">
                             <div class="d-flex flex-row justify-content-between align-items-center">
                                 <p class="title">Tabel Konsultasi</p>
-                                <a href="" class="btn" style="color: #48C39F;">+ Tambah</a>
+                                <button onclick="show()" class="btn" style="color: #48C39F;">+ Tambah</button>
                             </div>
                             <table class="table">
                                 <thead>
@@ -33,16 +33,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Ke - 1</td>
                                         <td>4 Oktober 2021</td>
-                                        <td>:</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ke - 1</td>
-                                        <td>4 Oktober 2021</td>
-                                        <td>:</td>
-                                    </tr>
+                                        <td>
+                                          <div class="btn-group">
+                                            <button type="button" class="btn btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                                              <span class="iconly-Setting icli" style="color: #48C39F;"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                              <li><a class="dropdown-item" href="#">Edit</a></li>
+                                              <li><a class="dropdown-item" href="#">Hapus</a></li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
@@ -66,9 +71,9 @@
                                   <b>Notes / Masalah</b>
                                 </button>
                               </h2>
-                              <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne">
+                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                                 <div class="accordion-body">
-                                  <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Tulis catatan atau kendala anda tentang mahasiswa ini disini"></textarea>
                                 </div>
                               </div>
                             </div>
@@ -80,7 +85,10 @@
                               </h2>
                               <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                                 <div class="accordion-body">
-                                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Tulis hal yang harus dilakukan mahasiswa ini disini"></textarea>
+                                  <div class="d-flex w-100 justify-content-end">
+                                    <button type="button" class="btn btn-primary px-3 my-2"><span class="iconly-Send icli"></span></button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -102,7 +110,114 @@
             </div> 
         </div>
     </div>
+    
+    <div class="modal fade" id="modalTambahSesi" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tambah Sesi Konsultasi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input type="date" name="tanggalSesiKonsultasi" class="form-control" id="floatingInput" placeholder="Pilih Tanggal Untuk Sesi Konsultasi Berikutnya">
+              <label for="floatingInput">Pilih Tanggal Untuk Sesi Konsultasi Berikutnya</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <button id="simpanSesiKonsultasi" onclick="submitForm()" type="button" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/static/assets/js/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="/static/assets/js/sidebar.js"></script>
+    <script>
+      const modalTambah = $('#modalTambahSesi')
+
+      $(document).ready(() => {
+        getAllSesi();
+      })
+
+      function show() {
+        modalTambah.modal('show')
+      }
+
+      function getAllSesi() {
+        let token = document.cookie;
+        token = token.replace('AuthToken=', '');
+        const nim = '<%- mhs.nim %>';
+        const table = $('.table tbody')
+        const data = $.ajax({
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          url: `/api/logbook/${nim}`,
+        })
+        .done((data) => {
+          console.log(data);
+          let row = ``;
+          $.each(data.data, (key, val) => {
+            row += `
+            <tr><td>Ke - ${key+1}</td>
+                <td>${new Date(val.date).toLocaleDateString()}</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span class="iconly-Setting icli" style="color: #48C39F;"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Edit</a></li>
+                      <li><a class="dropdown-item" href="#">Hapus</a></li>
+                    </ul>
+                  </div>
+                </td>
+            </tr>
+            `
+          })
+          table.html(row);
+          alert('Berhasil get data');
+        })
+        .fail((err) => {
+          console.log(err);
+          alert('gagal mengambil data');
+        });
+      }
+
+      function submitForm() {
+        let token = document.cookie;
+        token = token.replace('AuthToken=', '');
+        const data = {
+          nimMahasiswa: '<%- mhs.nim %>',
+          nipDosen: '<%- user.data.nip %>',
+          date: $('input[name="tanggalSesiKonsultasi"]').val()
+        };
+        $.ajax({
+          method: 'POST',
+          url: `/api/logbook`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify(data),
+        })
+        .done((data) => {
+          console.log(data);
+          modalTambah.modal('hide');
+          getAllSesi();
+          alert('Berhasil Menambahkan data');
+        })
+        .fail((err) => {
+          console.log(err);
+          alert(err.statusText);
+        })
+      }
+
+      $('#buttonTambahSesi').click((e) => {
+      })
+    </script>
 </body>
 </html> 

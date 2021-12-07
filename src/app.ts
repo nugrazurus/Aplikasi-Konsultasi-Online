@@ -6,7 +6,6 @@ import compressions from 'compression';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import indexRoute from './routes/index';
-import roomRoute from './routes/room';
 import apiRoute from './routes/api';
 import dosenRoute from './routes/dosen';
 dotenv.config();
@@ -25,14 +24,13 @@ app.use(
     extended: true,
   }),
 );
+app.use(cors());
 app.use(cookieParser());
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 app.use('/static', express.static(path.join(__dirname, './public')));
 app.use('/api', apiRoute);
 app.use('/dosen', dosenRoute);
-app.use('/room', roomRoute);
 app.use('/', indexRoute);
-app.use(cors());
 app.use(compressions());
 app.use(helmet());

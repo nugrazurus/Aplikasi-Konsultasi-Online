@@ -1,6 +1,15 @@
 import Logbook from '../models/logbook';
 import { Request, Response } from 'express';
 
+const randomString = () => {
+  const anysize = 3; //the size of string
+  const charset = 'abcdefghijklmnopqrstuvwxyz'; //from where to create
+  let i = 0;
+  let rand = '';
+  while (i++ < anysize) rand += charset.charAt(Math.random() * charset.length);
+  return rand;
+};
+
 export const index = async (req: Request, res: Response): Promise<void> => {
   try {
     const logbook = await Logbook.find({}).sort([['createdAt', -1]]);
@@ -17,8 +26,26 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+export const show = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const logbook = await Logbook.find({ nimMahasiswa: req.params.nim }).sort([['createdAt', 1]]);
+    res.json({
+      status: true,
+      message: 'success',
+      data: logbook,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
+    const roomName = `${randomString()}-${randomString()}-${randomString()}`;
+    req.body.roomName = roomName;
     const create = await Logbook.create(req.body);
     res.json({
       status: true,

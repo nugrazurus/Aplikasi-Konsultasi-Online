@@ -2,14 +2,14 @@ import mongoose, { Schema } from 'mongoose';
 
 interface Logbook {
   date: Date;
-  semester: string;
-  status: string;
   notes: Note[];
   action: Action[];
   attachments: Attachment[];
   supervisorComment: string;
-  verifiedBy: string;
-  dateVerified: Date;
+  roomName: string;
+  startTime: Date;
+  nipDosen: string;
+  nimMahasiswa: string;
 }
 
 interface Note {
@@ -30,9 +30,10 @@ interface Attachment {
 
 const logbookSchema: Schema = new Schema(
   {
+    roomName: { type: String, required: true },
+    nipDosen: { type: String, required: true },
+    nimMahasiswa: { type: String, required: true },
     date: { type: Date, required: true },
-    semester: { type: String, required: true },
-    status: { type: String, required: true },
     notes: {
       title: String,
       content: String,
@@ -46,8 +47,6 @@ const logbookSchema: Schema = new Schema(
       originalName: String,
       originalExt: String,
     },
-    supervisorComment: String,
-    veridifiedBy: String,
     dateVerified: Date,
   },
   {

@@ -3,17 +3,21 @@
     <div class="d-flex flex-column w-100">
         <% if (role) { %>
             <a href="/<%- role %> " class="btn btn-light my-2"><span class="iconly-Home icli"></span></a>
-            <a href="/<%- role %>/konsultasi" class="btn btn-light my-2"><span class="iconly-Video icli"></span></a>
             <a href="/<%- role %>/logbook" class="btn btn-light my-2"><span class="iconly-Document icli"></span></a>
+            <a href="/<%- role %>/konsultasi" class="btn btn-light my-2"><span class="iconly-Video icli"></span></a>
             <% } else { %>
                 <a href="/" class="btn btn-light my-2"><span class="iconly-Home icli"></span></a>
-                <a href="/konsultasi" class="btn btn-light my-2"><span class="iconly-Video icli"></span></a>
                 <a href="/logbook" class="btn btn-light my-2"><span class="iconly-Document icli"></span></a>
+                <a href="/konsultasi" class="btn btn-light my-2"><span class="iconly-Video icli"></span></a>
         <% } %>
     </div>
     <div class="dropdown mb-4">
         <button class="btn btn-secondary dropdown-toggle" style="border-radius: 10%; background-color: white; border: none; color: #48c39f;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+         <% if (user) { %>
+          <img src="/profil/dosen/foto-<%- user.data.nip %>.jpg" onerror="this.onerror=null;this.src='/profil/dosen/foto-<%- user.data.nip %>.JPG';"  width="40" height="40" class="rounded-circle" alt="">
+         <% } else { %>
           <img src="/static/assets/img/Ellipse 7.png" width="40" height="40" class="rounded-circle" alt="">
+         <% } %>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="/logout">Logout</a></li>

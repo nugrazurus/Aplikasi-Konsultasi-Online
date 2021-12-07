@@ -32,3 +32,27 @@ export const loginSiakadDosen = async (username: string, password: string) => {
       return err.response;
     });
 };
+
+export const getPicByNim = async (nim: string) => {
+  return await axios
+    .get(`${process.env.DPNA_ENDPOINT}/mhs/getpicbynim/${nim}`, { responseType: 'arraybuffer' })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const uint8 = new TextEncoder().encode(err);
+      return new TextDecoder().decode(uint8);
+    });
+};
+
+export const getPicByNip = async (nip: string) => {
+  return await axios
+    .get(`${process.env.BKD_ENDPOINT}/pub/${nip}`, { responseType: 'arraybuffer' })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const uint8 = new TextEncoder().encode(err);
+      return new TextDecoder().decode(uint8);
+    });
+};
