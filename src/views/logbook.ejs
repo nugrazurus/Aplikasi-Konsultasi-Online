@@ -1,4 +1,4 @@
-<%- include('_partial/head'); %>
+<%- include('_partial/head', {title: 'Logbook Mahasiswa'}); %>
 <body>
     <div class="d-flex flex-row main">
         <%- include('_partial/sidebar'); %>
@@ -6,7 +6,7 @@
             <%- include('_partial/navbar', {title: 'Logbook', tanggal: tanggal}); %>
             <div class="d-flex flex-column mb-4 bimbingan">
                 <p class="title">Pilih Mahasiswa</p>
-                <p class="text-muted mb-0">Silahkan pilih mahasiswa terlebih dahulu untuk melanjutkan</p>
+                <p class="text-muted mb-2">Silahkan pilih mahasiswa terlebih dahulu untuk melanjutkan</p>
                 <div id="mahasiswa" class="d-flex flex-row flex-wrap gap-3 justify-content-center" style="max-height: 80vh; overflow-y: auto;">
                     <% if (mhs) { %>
                      <% mhs.forEach(el => { %>

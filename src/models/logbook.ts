@@ -31,7 +31,9 @@ interface Attachment {
 const logbookSchema: Schema = new Schema(
   {
     roomName: { type: String, required: true },
+    namaDosen: { type: String, required: true },
     nipDosen: { type: String, required: true },
+    namaMahasiswa: { type: String, required: true },
     nimMahasiswa: { type: String, required: true },
     date: { type: Date, required: true },
     notes: {

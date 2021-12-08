@@ -1,4 +1,4 @@
-<%- include('_partial/head') %>
+<%- include('_partial/head', {title: 'Detail Logbook'}) %>
 <body>
     <div class="d-flex flex-row main">
         <%- include('_partial/sidebar') %> 
@@ -158,7 +158,6 @@
           url: `/api/logbook/${nim}`,
         })
         .done((data) => {
-          console.log(data);
           let row = ``;
           $.each(data.data, (key, val) => {
             row += `
@@ -179,7 +178,6 @@
             `
           })
           table.html(row);
-          alert('Berhasil get data');
         })
         .fail((err) => {
           console.log(err);
@@ -191,7 +189,9 @@
         let token = document.cookie;
         token = token.replace('AuthToken=', '');
         const data = {
+          namaMahasiswa: '<%- mhs.nama %>',
           nimMahasiswa: '<%- mhs.nim %>',
+          namaDosen: '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>',
           nipDosen: '<%- user.data.nip %>',
           date: $('input[name="tanggalSesiKonsultasi"]').val()
         };

@@ -1,4 +1,4 @@
-  <%- include('_partial/head') %> 
+  <%- include('_partial/head', {title: 'Konsultasi'}) %> 
   <body>
     <div class="d-flex flex-row main">
         <%- include('_partial/sidebar') %> 
@@ -7,7 +7,7 @@
             <div class="d-flex flex-row w-100 justify-content-end align-items-center">
               <p>Mahasiswa</p>
               <div class="form-floating mx-2">
-                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                <select class="form-select" name="nim">
                   <option value hidden>-- Pilih Mahasiswa --</option>
                   <% if (mhs) { %>
                    <% mhs.forEach(mahasiswa => { %>
@@ -19,22 +19,20 @@
               </div>
               <p>Sesi Konsultasi</p>
               <div class="form-floating mx-2">
-                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                <select class="form-select" id="sesi" name="sesi">
                   <option value hidden>-- Pilih Sesi --</option>
                 </select>
                 <label for="floatingSelect">Pilih Sesi</label>
               </div>
-              <button type="button" class="btn btn-primary" id="ngage">Ngage</button>
             </div>
-            <div class="h-75" id="videoconf"><div class="d-flex justify-content-center w-100 h-100 align-items-center"><p>Pilih Mahasiswa dan sesi konsultasi</p></div></div>
-            <div class="h-75"></div>
+            <div class="h-75 mt-4" id="videoconf"><div class="d-flex justify-content-center w-100 h-100 align-items-center"><p>Pilih Mahasiswa dan sesi konsultasi</p></div></div>
         </div>
         <div class="d-flex flex-column w-25 vh-100" style="background-color: #F5FBF9;">
             <div class="d-flex align-items-end justify-content-start px-2 py-2" style="height: 10%; color: white; background-color: #48C39F;">
-                <p>Sesi Konsultasi Ke - 2</p>
+                <p>Sesi Konsultasi <span id="sesiKe"></span></p>
             </div>
             <div class="d-flex px-2 py-2">
-                asdsa
+                
             </div>
         </div>
     </div>
@@ -43,44 +41,85 @@
     <script src="/static/assets/js/sidebar.js"></script>
     <script>
       const nama = '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>';
-      console.log(nama);
-      $('#ngage').click((e) => {
-        $('#videoconf').html('')
-        const api = new IFrameVideoAPI({
-          roomName: 'TEST',
-          width: '100%',
-          height: '100%',
-          userInfo: {
-            displayName: nama
+      let token = document.cookie;
+      let dataSesiMhs;
+      let apiNgage;
+      token = token.replace('AuthToken=', '');
+      $('select[name="nim"]').change(function () {
+        const nim = $(this).val();
+        $.ajax({
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
           },
-          container: document.querySelector("#videoconf"),
-          interfaceConfigOverwrite: {
-            TOOLBAR_BUTTONS: [
-              "microphone",
-              "camera",
-              "desktop",
-              "fullscreen",
-              "hangup",
-              "chat",
-              "tileview",
-              "stats",
-              "videoquality",
-              "raisehand",
-              "settings",
-              "participant-count",
-              "videobackgroundblur",
-              "mute-everyone"
-          ]},
-          initialSetup: { 
-            startWithAudioMuted: true,
-            startWithVideoMuted: true 
-          },
-          apiID: 'TEST',
-          apiKey: 'TEST',
-        });
-        api.subscribeEvent(api.Events.PARTICIPANT_JOINED, function(e) {
-          console.log(e.displayName + ' (' + e.id +') joined')
+          url: `/api/logbook/${nim}`
         })
+        .done(function (data) {
+          apiNgage = data.apiNgage;
+          const dataSesi = data.data;
+          dataSesiMhs = data.data;
+          let opt = `<option value hidden>-- Pilih Sesi --</option>`;
+          $.each(dataSesi, function (key, val) {
+            opt += `
+            <option value="${val.roomName}" >Sesi Ke - ${key+1}</option>
+            `
+          });
+          $('select[name="sesi"]').html(opt);
+        })
+        .fail(function (err) {
+          console.error(err);
+          alert('Gagal mengambil sesi');
+        });
+      });
+      $('select[name="sesi"]').change(function () {
+        const sel = $(this);
+        $('#sesiKe').html(sel[0][sel[0].selectedIndex].innerText.replace('Sesi ', ''));
+        const roomName = $(this).val()
+        const data = dataSesiMhs.find(val => val.roomName = roomName);
+        const date = new Date();
+        const dateSesi = new Date(data.date);
+        if (date.getTime() >= dateSesi.getTime()) {
+          $('#videoconf').html('')
+          const api = new IFrameVideoAPI({
+            roomName: roomName,
+            width: '100%',
+            height: '100%',
+            userInfo: {
+              displayName: nama
+            },
+            container: document.querySelector("#videoconf"),
+            interfaceConfigOverwrite: {
+              TOOLBAR_BUTTONS: [
+                "microphone",
+                "camera",
+                "desktop",
+                "fullscreen",
+                "hangup",
+                "chat",
+                "tileview",
+                "stats",
+                "videoquality",
+                "raisehand",
+                "settings",
+                "participant-count",
+                "videobackgroundblur",
+                "mute-everyone"
+            ]},
+            initialSetup: { 
+              startWithAudioMuted: true,
+              startWithVideoMuted: true 
+            },
+            apiID: 'TEST',
+            apiKey: 'TEST',
+            // apiID: apiNgage.apiId,
+            // apiKey: apiNgage.apiKey,
+          });
+          api.subscribeEvent(api.Events.PARTICIPANT_JOINED, function(e) {
+            console.log(e.displayName + ' (' + e.id +') joined')
+          })
+        } else {
+          alert(`Bimbingan dapat dilakukan pada tanggal ${dateSesi.toLocaleDateString()}`)
+        }
       })
     </script>
     <script>

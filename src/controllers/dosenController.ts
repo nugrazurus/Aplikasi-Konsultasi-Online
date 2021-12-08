@@ -7,11 +7,20 @@ export const index = async (req: Request, res: Response): Promise<void> => {
     const { payload } = jwt.decode(req.cookies.AuthToken, { complete: true });
     let mhs = await getBimbinganPA(parseInt(payload.data.iddosen), 374);
     const tanggal = tampilTanggal();
+    const countAngkatan = mhs
+      .map((val: any) => {
+        return `20${val.nim.substring(5, 7)}`;
+      })
+      .reduce((map: any, val: any) => {
+        map[val] = (map[val] || 0) + 1;
+        return map;
+      }, {});
     if (mhs.length < 1) {
       res.status(500).json(mhs);
     }
     mhs = mhs.slice(0, 5);
-    res.render('index', { mhs: mhs, tanggal: tanggal, role: 'dosen' });
+    // res.json(countAngkatan);
+    res.render('index', { mhs: mhs, tanggal: tanggal, role: 'dosen', angkatan: countAngkatan });
   } catch (error) {
     console.error(error);
     res.status(500).render('_404');

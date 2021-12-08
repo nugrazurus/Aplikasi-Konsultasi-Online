@@ -29,10 +29,15 @@ export const index = async (req: Request, res: Response): Promise<void> => {
 export const show = async (req: Request, res: Response): Promise<void> => {
   try {
     const logbook = await Logbook.find({ nimMahasiswa: req.params.nim }).sort([['createdAt', 1]]);
+    const apiNgage = {
+      apiId: process.env.API_ID,
+      apiKey: process.env.API_KEY,
+    };
     res.json({
       status: true,
       message: 'success',
       data: logbook,
+      apiNgage: apiNgage,
     });
   } catch (error) {
     res.status(500).json({

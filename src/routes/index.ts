@@ -6,6 +6,7 @@ const router = Router();
 router.get('/', controller.index);
 router.get('/pic/:nim', controller.getMhsPicByNim);
 router.get('/profil/dosen/:nip', controller.getDosenPicByNip);
+router.get('/login', authController.loginIndex);
 router.post('/login', authController.loginServerSide);
 router.get('/logout', authController.logout);
 router.use('*', (req: Request, res: Response) => {

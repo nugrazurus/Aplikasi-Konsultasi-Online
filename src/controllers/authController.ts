@@ -36,6 +36,14 @@ const generateToken = (user: User) => {
   return token;
 };
 
+export const loginIndex = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res.status(200).render('login');
+  } catch (error) {
+    res.status(500).render('_404');
+  }
+};
+
 export const loginServerSide = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password, role } = req.body;
