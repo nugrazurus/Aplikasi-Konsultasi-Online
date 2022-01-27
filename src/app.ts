@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import indexRoute from './routes/index';
 import apiRoute from './routes/api';
 import dosenRoute from './routes/dosen';
+import mahasiswaRoute from './routes/mahasiswa';
 dotenv.config();
 export const app = express();
 
@@ -31,6 +32,7 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static(path.join(__dirname, './public')));
 app.use('/api', apiRoute);
 app.use('/dosen', dosenRoute);
+app.use('/mahasiswa', mahasiswaRoute);
 app.use('/', indexRoute);
 app.use(compressions());
 app.use(helmet());

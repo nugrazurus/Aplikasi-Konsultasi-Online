@@ -38,6 +38,7 @@ const generateToken = (user: User) => {
 
 export const loginIndex = async (req: Request, res: Response): Promise<void> => {
   try {
+    res.locals.message = ''
     res.status(200).render('login');
   } catch (error) {
     res.status(500).render('_404');
@@ -56,7 +57,7 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
           data.role = 'mahasiswa';
           delete data.passwd;
           res.cookie('AuthToken', generateToken(data));
-          res.status(200).render('index');
+          res.redirect('mahasiswa');
         } else {
           res.status(200).json({
             status: false,
@@ -76,11 +77,11 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
           res.cookie('AuthToken', generateToken(data));
           res.status(200).redirect('dosen');
         } else {
-          console.log(response);
-          res.status(200).json({
-            status: false,
-            message: 'Username atau password anda salah',
-          });
+          res.render('login', {message: 'Username atau password anda salah'})
+          // res.status(200).json({
+          //   status: false,
+          //   message: 'Username atau password anda salah',
+          // });
         }
         break;
       default:

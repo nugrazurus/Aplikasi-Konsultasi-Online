@@ -45,6 +45,17 @@ export const getPicByNim = async (nim: string) => {
     });
 };
 
+export const getPeriode = async () => {
+  return await axios
+    .get(`${process.env.DPNA_ENDPOINT}/getperiodelirs`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
 export const getPicByNip = async (nip: string) => {
   return await axios
     .get(`${process.env.BKD_ENDPOINT}/pub/${nip}`, { responseType: 'arraybuffer' })

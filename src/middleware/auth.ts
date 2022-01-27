@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { tampilTanggal } from '../controllers/dosenController';
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   console.log(req.headers);
@@ -39,6 +40,25 @@ export const redirectIfAuthenticated = (req: Request, res: Response, next: NextF
       res.clearCookie('AuthToken');
       return res.redirect('/login');
     }
+    res.locals.role = 'dosen';
+    res.locals.tanggal = tampilTanggal();
+    res.locals.user = decoded;
+    next();
+  });
+};
+
+export const mahasiswaAuth = (req: Request, res: Response, next: NextFunction) => {
+  const token = `${req.cookies.AuthToken}`;
+  if (!token) {
+    return res.redirect('/login');
+  }
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err || decoded.data.role !== 'mahasiswa') {
+      res.clearCookie('AuthToken');
+      return res.redirect('/login');
+    }
+    res.locals.role = 'mahasiswa';
+    res.locals.tanggal = tampilTanggal();
     res.locals.user = decoded;
     next();
   });

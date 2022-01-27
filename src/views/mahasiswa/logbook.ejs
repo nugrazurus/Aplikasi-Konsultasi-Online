@@ -6,18 +6,18 @@
             <%- include('_partial/navbar', {title: 'Logbook', tanggal: tanggal}) %>
             <div class="d-flex flex-column mb-4">
                 <p class="title">Logbook <%- mhs.nama %> </p>
-                <p class="text-muted mb-2">Berikut adalah data logbook untuk mahasiswa <%- mhs.nama %> </p>
+                <p class="text-muted mb-2">Berikut adalah data logbook untuk mahasiswa <%- user.data.nama %> </p>
                 <div class="row">
                     <div class="col-3">
                         <div class="d-flex flex-column w-100 align-items-center px-4 py-4 mb-4" style="color: white; background-color: #48C39F; border-radius: 10px;">
                             <div class="d-flex justify-content-center align-items-center rounded-circle" style="width: 120px; height: 120px; background-color: white;">
                               <div class="image-cropper" style="width: 116px; height: 116px;">
-                                <img class="mb-2 " style="width: 116px;" src="/pic/<%- mhs.nim %> " alt="">
+                                <img class="mb-2 " style="width: 116px;" src="/pic/<%- user.data.nim %> " alt="">
                               </div>
                             </div>
-                            <p style="margin: 0; font-weight: 600;"><%- mhs.nama %> </p>
-                            <p style="margin: 0;"><%- mhs.nim %> </p>
-                            <p style="margin: 0;">Angkatan <%- mhs.angkatan %> </p>
+                            <p style="margin: 0; font-weight: 600;"><%- user.data.nama %> </p>
+                            <p style="margin: 0;"><%- user.data.nim %> </p>
+                            <p style="margin: 0;">Angkatan <%- user.data.angkatan %> </p>
                         </div>
                         <div class="card d-flex flex-column px-4 py-4 w-100" style="max-height: 400px; overflow-y: auto;">
                             <div class="d-flex flex-row justify-content-between align-items-center">
@@ -146,9 +146,9 @@
       }
 
       function getAllSesi() {
-        let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
+        let token = document.cookie;
         token = token.replace('AuthToken=', '');
-        const nim = '<%- mhs.nim %>';
+        const nim = '<%- user.data.nim %>';
         const table = $('.table tbody')
         const data = $.ajax({
           method: 'GET',
@@ -186,11 +186,11 @@
       }
 
       function submitForm() {
-        let token = document.cookie;
+        let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
         token = token.replace('AuthToken=', '');
         const data = {
-          namaMahasiswa: '<%- mhs.nama %>',
-          nimMahasiswa: '<%- mhs.nim %>',
+          namaMahasiswa: '<%- user.data.nama %>',
+          nimMahasiswa: '<%- user.data.nim %>',
           namaDosen: '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>',
           nipDosen: '<%- user.data.nip %>',
           date: $('input[name="tanggalSesiKonsultasi"]').val()

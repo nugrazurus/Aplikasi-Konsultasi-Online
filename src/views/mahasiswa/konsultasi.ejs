@@ -41,6 +41,7 @@
     <script src="/static/assets/js/sidebar.js"></script>
     <script>
       const nama = '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>';
+      let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
       let dataSesiMhs;
       let apiNgage;
       token = token.replace('AuthToken=', '');
@@ -81,40 +82,40 @@
         console.log(date.getTime() >= dateSesi.getTime());
         if (date.getTime() >= dateSesi.getTime()) {
           $('#videoconf').html('')
-          const api = new IFrameVideoAPI({
-            roomName: roomName,
-            width: '100%',
-            height: '100%',
-            userInfo: {
-              displayName: nama
-            },
-            container: document.querySelector("#videoconf"),
-            interfaceConfigOverwrite: {
-              TOOLBAR_BUTTONS: [
-                "microphone",
-                "camera",
-                "desktop",
-                "fullscreen",
-                "hangup",
-                "chat",
-                "tileview",
-                "stats",
-                "videoquality",
-                "raisehand",
-                "settings",
-                "participant-count",
-                "videobackgroundblur",
-                "mute-everyone"
-            ]},
-            initialSetup: { 
-              startWithAudioMuted: true,
-              startWithVideoMuted: true 
-            },
-            apiID: 'TEST',
-            apiKey: 'TEST',
-            // apiID: apiNgage.apiId,
-            // apiKey: apiNgage.apiKey,
-          });
+          // const api = new IFrameVideoAPI({
+          //   roomName: roomName,
+          //   width: '100%',
+          //   height: '100%',
+          //   userInfo: {
+          //     displayName: nama
+          //   },
+          //   container: document.querySelector("#videoconf"),
+          //   interfaceConfigOverwrite: {
+          //     TOOLBAR_BUTTONS: [
+          //       "microphone",
+          //       "camera",
+          //       "desktop",
+          //       "fullscreen",
+          //       "hangup",
+          //       "chat",
+          //       "tileview",
+          //       "stats",
+          //       "videoquality",
+          //       "raisehand",
+          //       "settings",
+          //       "participant-count",
+          //       "videobackgroundblur",
+          //       "mute-everyone"
+          //   ]},
+          //   initialSetup: { 
+          //     startWithAudioMuted: true,
+          //     startWithVideoMuted: true 
+          //   },
+          //   apiID: 'TEST',
+          //   apiKey: 'TEST',
+          //   // apiID: apiNgage.apiId,
+          //   // apiKey: apiNgage.apiKey,
+          // });
           api.subscribeEvent(api.Events.PARTICIPANT_JOINED, function(e) {
             console.log(e.displayName + ' (' + e.id +') joined')
           })

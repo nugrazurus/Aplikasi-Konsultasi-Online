@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { verifyToken } from '../middleware/auth';
-import * as controller from '../controllers/apiController';
+import { mahasiswaAuth } from '../middleware/auth';
+import * as controller from '../controllers/mahasiswaController';
 const router = Router();
 
-router.all('/*', verifyToken);
-router.get('/periodelirs', controller.getPeriodeLirs);
+router.all('/*', mahasiswaAuth);
+router.get('/', controller.index);
+router.get('/konsultasi', controller.konsultasi);
+router.get('/logbook', controller.logbook);
 export default router;

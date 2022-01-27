@@ -14,7 +14,7 @@
             </div>
             <div class="d-flex flex-column align-items-center justify-content-center vh-100" style="width: 35%;">
                 <div class="d-flex flex-column justify-content-start mx-2">
-                    <h4 class="text-muted">Halaman Login</h4>
+                    <h4 class="text-muted">Halaman <%- locals.test %> </h4>
                     <h1><b>Aplikasi Bimbingan <br>Akademik</b></h1>
                     <p class="text-muted">Silahkan login menggunakan NIP / NIM dan password siakad</p>
                     <form action="/login" method="post">
@@ -41,6 +41,20 @@
                 </div>
             </div>
         </div>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                const payload = '<%- message %>'
+                if (payload !== '') {
+                    Swal.fire({
+                        title: payload,
+                        text: 'Silahkan coba kembali',
+                        icon: 'error',
+                        confirmButtonText: 'Tutup',
+                        timer: 1500
+                    })
+                }
+                console.log(payload);
+            </script>
     </body>
 
     </html>

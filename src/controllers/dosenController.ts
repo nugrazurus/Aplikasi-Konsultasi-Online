@@ -6,7 +6,6 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   try {
     const { payload } = jwt.decode(req.cookies.AuthToken, { complete: true });
     let mhs = await getBimbinganPA(parseInt(payload.data.iddosen), 374);
-    const tanggal = tampilTanggal();
     const countAngkatan = mhs
       .map((val: any) => {
         return `20${val.nim.substring(5, 7)}`;
@@ -19,8 +18,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
       res.status(500).json(mhs);
     }
     mhs = mhs.slice(0, 5);
-    // res.json(countAngkatan);
-    res.render('index', { mhs: mhs, tanggal: tanggal, role: 'dosen', angkatan: countAngkatan });
+    res.render('index', { mhs: mhs, angkatan: countAngkatan });
   } catch (error) {
     console.error(error);
     res.status(500).render('_404');
@@ -35,7 +33,7 @@ export const logbook = async (req: Request, res: Response): Promise<void> => {
     if (mhs.length < 1) {
       res.status(500).json(mhs);
     }
-    res.render('logbook', { mhs: mhs, tanggal: tanggal, role: 'dosen' });
+    res.render('logbook', { mhs: mhs });
   } catch (error) {
     console.error(error);
     res.status(500).render('_404');
@@ -48,8 +46,7 @@ export const logbookDetail = async (req: Request, res: Response): Promise<void> 
     const { payload } = jwt.decode(req.cookies.AuthToken, { complete: true });
     const { iddosen } = payload.data;
     const mhs = await getMhs(nim, iddosen);
-    const tanggal = tampilTanggal();
-    res.render('logbook-detail', { mhs: mhs, tanggal: tanggal, role: 'dosen' });
+    res.render('logbook-detail', { mhs: mhs });
   } catch (error) {
     console.error(error);
     res.status(500).render('_404');
@@ -60,7 +57,7 @@ export const konsultasi = async (req: Request, res: Response): Promise<void> => 
   try {
     const { payload } = jwt.decode(req.cookies.AuthToken, { complete: true });
     const mhs = await getBimbinganPA(parseInt(payload.data.iddosen), 374);
-    res.render('konsultasi', { tanggal: tampilTanggal(), role: 'dosen', mhs: mhs });
+    res.render('konsultasi', { mhs: mhs });
   } catch (error) {
     console.error(error);
     res.status(500).render('_404');
@@ -76,7 +73,7 @@ const getMhs = async (nim: string, iddosen: number) => {
   return data;
 };
 
-const tampilTanggal = () => {
+export const tampilTanggal = () => {
   const date = new Date();
 
   const tahun = date.getFullYear();
