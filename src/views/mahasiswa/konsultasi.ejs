@@ -1,22 +1,10 @@
-  <%- include('_partial/head', {title: 'Konsultasi'}) %> 
+  <%- include('../_partial/head', {title: 'Konsultasi'}) %> 
   <body>
     <div class="d-flex flex-row main">
-        <%- include('_partial/sidebar') %> 
+        <%- include('../_partial/sidebar') %> 
         <div class="container-fluid w-75 mx-4 my-4 ngage">
-            <%- include('_partial/navbar', {title: 'Konsultasi Online', tanggal: tanggal}) %>
+            <%- include('../_partial/navbar', {title: 'Konsultasi Online', tanggal: tanggal}) %>
             <div class="d-flex flex-row w-100 justify-content-end align-items-center">
-              <p>Mahasiswa</p>
-              <div class="form-floating mx-2">
-                <select class="form-select" name="nim">
-                  <option value hidden>-- Pilih Mahasiswa --</option>
-                  <% if (mhs) { %>
-                   <% mhs.forEach(mahasiswa => { %>
-                    <option value="<%- mahasiswa.nim %> "><%- mahasiswa.nama %> </option>
-                   <% }) %>
-                  <% } %>
-                </select>
-                <label for="floatingSelect">Pilih Mahasiswa</label>
-              </div>
               <p>Sesi Konsultasi</p>
               <div class="form-floating mx-2">
                 <select class="form-select" id="sesi" name="sesi">
@@ -32,45 +20,52 @@
                 <p>Sesi Konsultasi <span id="sesiKe"></span></p>
             </div>
             <div class="d-flex px-2 py-2">
-                
+                <div class="d-flex w-100 justify-content-end">
+                  <select class="form-select" aria-label="Default select example">
+                    <option hidden value="">-- Pilih Log --</option>
+                    <option value="1">Notes / Masalah</option>
+                    <option value="2">Hal yang Harus dilakukan</option>
+                    <option value="3">Lampiran</option>
+                  </select>
+                </div>
             </div>
         </div>
     </div>
-    <script src="/static/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="/static/assets/js/sidebar.js"></script>
+    <%- include('../_partial/include_js') %> 
     <script>
       const nama = '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>';
       let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
       let dataSesiMhs;
       let apiNgage;
       token = token.replace('AuthToken=', '');
-      $('select[name="nim"]').change(function () {
-        const nim = $(this).val();
-        $.ajax({
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          url: `/api/logbook/${nim}`
-        })
-        .done(function (data) {
-          apiNgage = data.apiNgage;
-          const dataSesi = data.data;
-          dataSesiMhs = data.data;
-          let opt = `<option value hidden>-- Pilih Sesi --</option>`;
-          $.each(dataSesi, function (key, val) {
-            opt += `
-            <option value="${val.roomName}" >Sesi Ke - ${key+1}</option>
-            `
-          });
-          $('select[name="sesi"]').html(opt);
-        })
-        .fail(function (err) {
-          console.error(err);
-          alert('Gagal mengambil sesi');
-        });
-      });
+      $(document).ready(function () {
+        getAllSesi()
+      })
+      function getAllSesi() {
+          const nim = '<%- user.data.username %>';
+          const data = $.ajax({
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            async: false,
+            url: `/api/logbook/${nim}`,
+          })
+            .done((data) => {
+              dataSesiMhs = data.data
+              let opt = `<option value hidden>-- Pilih Sesi --</option>`;
+              $.each(data.data, function (key, val) {
+                opt += `
+                <option value="${val.roomName}" >Sesi Ke - ${key+1}</option>
+                `
+              })
+              $('select[name="sesi"]').html(opt);
+            })
+            .fail((err) => {
+              console.log(err);
+              alert('gagal mengambil data');
+            });
+        }
       $('select[name="sesi"]').change(function () {
         const sel = $(this);
         $('#sesiKe').html(sel[0][sel[0].selectedIndex].innerText.replace('Sesi ', ''));
@@ -82,40 +77,40 @@
         console.log(date.getTime() >= dateSesi.getTime());
         if (date.getTime() >= dateSesi.getTime()) {
           $('#videoconf').html('')
-          // const api = new IFrameVideoAPI({
-          //   roomName: roomName,
-          //   width: '100%',
-          //   height: '100%',
-          //   userInfo: {
-          //     displayName: nama
-          //   },
-          //   container: document.querySelector("#videoconf"),
-          //   interfaceConfigOverwrite: {
-          //     TOOLBAR_BUTTONS: [
-          //       "microphone",
-          //       "camera",
-          //       "desktop",
-          //       "fullscreen",
-          //       "hangup",
-          //       "chat",
-          //       "tileview",
-          //       "stats",
-          //       "videoquality",
-          //       "raisehand",
-          //       "settings",
-          //       "participant-count",
-          //       "videobackgroundblur",
-          //       "mute-everyone"
-          //   ]},
-          //   initialSetup: { 
-          //     startWithAudioMuted: true,
-          //     startWithVideoMuted: true 
-          //   },
-          //   apiID: 'TEST',
-          //   apiKey: 'TEST',
-          //   // apiID: apiNgage.apiId,
-          //   // apiKey: apiNgage.apiKey,
-          // });
+          const api = new IFrameVideoAPI({
+            roomName: roomName,
+            width: '100%',
+            height: '100%',
+            userInfo: {
+              displayName: nama
+            },
+            container: document.querySelector("#videoconf"),
+            interfaceConfigOverwrite: {
+              TOOLBAR_BUTTONS: [
+                "microphone",
+                "camera",
+                "desktop",
+                "fullscreen",
+                "hangup",
+                "chat",
+                "tileview",
+                "stats",
+                "videoquality",
+                "raisehand",
+                "settings",
+                "participant-count",
+                "videobackgroundblur",
+                "mute-everyone"
+            ]},
+            initialSetup: { 
+              startWithAudioMuted: true,
+              startWithVideoMuted: true 
+            },
+            apiID: 'TEST',
+            apiKey: 'TEST',
+            // apiID: apiNgage.apiId,
+            // apiKey: apiNgage.apiKey,
+          });
           api.subscribeEvent(api.Events.PARTICIPANT_JOINED, function(e) {
             console.log(e.displayName + ' (' + e.id +') joined')
           })

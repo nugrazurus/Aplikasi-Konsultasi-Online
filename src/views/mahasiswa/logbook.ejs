@@ -1,116 +1,128 @@
-<%- include('_partial/head', {title: 'Detail Logbook'}) %>
-<body>
+<%- include('../_partial/head', {title: 'Detail Logbook' }) %>
+
+  <body>
     <div class="d-flex flex-row main">
-        <%- include('_partial/sidebar') %> 
+      <%- include('../_partial/sidebar') %>
         <div class="container-fluid mx-4 my-4">
-            <%- include('_partial/navbar', {title: 'Logbook', tanggal: tanggal}) %>
+          <%- include('../_partial/navbar', {title: 'Logbook' , tanggal: tanggal}) %>
             <div class="d-flex flex-column mb-4">
-                <p class="title">Logbook <%- mhs.nama %> </p>
-                <p class="text-muted mb-2">Berikut adalah data logbook untuk mahasiswa <%- user.data.nama %> </p>
-                <div class="row">
-                    <div class="col-3">
-                        <div class="d-flex flex-column w-100 align-items-center px-4 py-4 mb-4" style="color: white; background-color: #48C39F; border-radius: 10px;">
-                            <div class="d-flex justify-content-center align-items-center rounded-circle" style="width: 120px; height: 120px; background-color: white;">
-                              <div class="image-cropper" style="width: 116px; height: 116px;">
-                                <img class="mb-2 " style="width: 116px;" src="/pic/<%- user.data.nim %> " alt="">
-                              </div>
-                            </div>
-                            <p style="margin: 0; font-weight: 600;"><%- user.data.nama %> </p>
-                            <p style="margin: 0;"><%- user.data.nim %> </p>
-                            <p style="margin: 0;">Angkatan <%- user.data.angkatan %> </p>
-                        </div>
-                        <div class="card d-flex flex-column px-4 py-4 w-100" style="max-height: 400px; overflow-y: auto;">
-                            <div class="d-flex flex-row justify-content-between align-items-center">
-                                <p class="title">Tabel Konsultasi</p>
-                                <button onclick="show()" class="btn" style="color: #48C39F;">+ Tambah</button>
-                            </div>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Sesi</th>
-                                        <th>Tanggal</th>
-                                        <th>#</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- <tr>
-                                        <td>Ke - 1</td>
-                                        <td>4 Oktober 2021</td>
-                                        <td>
-                                          <div class="btn-group">
-                                            <button type="button" class="btn btn-light" data-bs-toggle="dropdown" aria-expanded="false">
-                                              <span class="iconly-Setting icli" style="color: #48C39F;"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                              <li><a class="dropdown-item" href="#">Edit</a></li>
-                                              <li><a class="dropdown-item" href="#">Hapus</a></li>
-                                            </ul>
-                                          </div>
-                                        </td>
-                                    </tr> -->
-                                </tbody>
-                            </table>
-                        </div>
+              <p class="title">Logbook <%- user.data.nama %>
+              </p>
+              <p class="text-muted mb-2">Berikut adalah data logbook <%- user.data.nama %>
+              </p>
+              <div class="row">
+                <div class="col-3">
+                  <div class="d-flex flex-column w-100 align-items-center px-4 py-4 mb-4"
+                    style="color: white; background-color: #48C39F; border-radius: 10px;">
+                    <div class="d-flex justify-content-center align-items-center rounded-circle"
+                      style="width: 120px; height: 120px; background-color: white;">
+                      <div class="image-cropper" style="width: 116px; height: 116px;">
+                        <img class="mb-2 " style="width: 116px;" src="/pic/<%- user.data.username %> " alt="">
+                      </div>
                     </div>
-                    <div class="col-9">
-                        <div class="d-flex mb-4">
-                            <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
-                                <a href="#" class="stretched-link">Sesi Ke-1</a>
-                            </div>
-                            <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
-                                <p>Sesi Ke-1</p>
-                            </div>
-                            <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
-                                <p>Sesi Ke-1</p>
-                            </div>
-                        </div>
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item mb-4">
-                              <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                  <b>Notes / Masalah</b>
-                                </button>
-                              </h2>
-                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
-                                <div class="accordion-body">
-                                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Tulis catatan atau kendala anda tentang mahasiswa ini disini"></textarea>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item mb-4">
-                              <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                  <b>Hal Yang Harus Dilakukan</b>
-                                </button>
-                              </h2>
-                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
-                                <div class="accordion-body">
-                                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Tulis hal yang harus dilakukan mahasiswa ini disini"></textarea>
-                                  <div class="d-flex w-100 justify-content-end">
-                                    <button type="button" class="btn btn-primary px-3 my-2"><span class="iconly-Send icli"></span></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item mb-4">
-                              <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                  <b>Lampiran</b>
-                                </button>
-                              </h2>
-                              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
-                                <div class="accordion-body">
-                                  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                    <p style="margin: 0; font-weight: 600;">
+                      <%- user.data.nama %>
+                    </p>
+                    <p style="margin: 0;">
+                      <%- user.data.nim %>
+                    </p>
+                    <p style="margin: 0;">Angkatan <%- angkatan %>
+                    </p>
+                  </div>
+                  <div class="card d-flex flex-column px-4 py-4 w-100" style="max-height: 400px; overflow-y: auto;">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                      <p class="title">Tabel Konsultasi</p>
+                      <button onclick="show()" class="btn" style="color: #48C39F;">+ Tambah</button>
                     </div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Sesi</th>
+                          <th>Tanggal</th>
+                          <th>#</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-            </div> 
+                <div class="col-9">
+                  <div class="d-flex mb-4" id="buttonSesi">
+                    <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                      <a href="#" class="stretched-link">Sesi Ke-1</a>
+                    </div>
+                    <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                      <p>Sesi Ke-1</p>
+                    </div>
+                    <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                      <p>Sesi Ke-1</p>
+                    </div>
+                  </div>
+                  <div class="accordion" id="accordionExample">
+                    <div class="accordion-item mb-4">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          <b>Notes / Masalah</b>
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                        <div class="accordion-body">
+                          <form id="formMasalah" action="#" method="POST">
+                            <label for="">Judul</label>
+                            <input type="text" name="titleMasalah" value="" class="form-control mb-2"
+                              placeholder="Tulis judul dari catatan atau kendala anda disini">
+                            <label for="">Notes / Masalah</label>
+                            <textarea class="form-control" name="contentMasalah" rows="4"
+                              placeholder="Tulis catatan atau kendala anda disini"></textarea>
+                            <div class="d-flex w-100 justify-content-end">
+                              <button type="submit" class="btn btn-primary px-3 my-2"><span
+                                  class="iconly-Send icli"></span></button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item mb-4">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <b>Hal Yang Harus Dilakukan</b>
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                        <div class="accordion-body">
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                            placeholder="Tulis hal yang harus dilakukan mahasiswa ini disini"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item mb-4">
+                      <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          <b>Lampiran</b>
+                        </button>
+                      </h2>
+                      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                        <div class="accordion-body">
+                          <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
+                          collapse plugin adds the appropriate classes that we use to style each element. These classes
+                          control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                          modify any of this with custom CSS or overriding our default variables. It's also worth noting
+                          that just about any HTML can go within the <code>.accordion-body</code>, though the transition
+                          does limit overflow.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="modalTambahSesi" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -120,48 +132,58 @@
           </div>
           <div class="modal-body">
             <div class="form-floating mb-3">
-              <input type="date" name="tanggalSesiKonsultasi" class="form-control" id="floatingInput" placeholder="Pilih Tanggal Untuk Sesi Konsultasi Berikutnya">
+              <input type="date" name="tanggalSesiKonsultasi" class="form-control" id="floatingInput"
+                placeholder="Pilih Tanggal Untuk Sesi Konsultasi Berikutnya">
               <label for="floatingInput">Pilih Tanggal Untuk Sesi Konsultasi Berikutnya</label>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            <button id="simpanSesiKonsultasi" onclick="submitForm()" type="button" class="btn btn-primary">Simpan</button>
+            <button id="simpanSesiKonsultasi" onclick="submitForm()" type="button"
+              class="btn btn-primary">Simpan</button>
           </div>
         </div>
       </div>
     </div>
-    <script src="/static/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="/static/assets/js/sidebar.js"></script>
-    <script>
-      const modalTambah = $('#modalTambahSesi')
-
-      $(document).ready(() => {
-        getAllSesi();
-      })
-
-      function show() {
-        modalTambah.modal('show')
-      }
-
-      function getAllSesi() {
-        let token = document.cookie;
+    <%- include('../_partial/include_js') %>
+      <script>
+        const modalTambah = $('#modalTambahSesi')
+        let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
         token = token.replace('AuthToken=', '');
-        const nim = '<%- user.data.nim %>';
-        const table = $('.table tbody')
-        const data = $.ajax({
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          url: `/api/logbook/${nim}`,
+        let idLogbook = ''
+
+        $(document).ready(() => {
+          getAllSesi();
         })
-        .done((data) => {
-          let row = ``;
-          $.each(data.data, (key, val) => {
-            row += `
-            <tr><td>Ke - ${key+1}</td>
+
+        function show() {
+          modalTambah.modal('show')
+        }
+
+        function getAllSesi() {
+          let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
+          token = token.replace('AuthToken=', '');
+          console.log(token);
+          const nim = '<%- user.data.username %>';
+          const table = $('.table tbody')
+          const data = $.ajax({
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            url: `/api/logbook/${nim}`,
+          })
+            .done((data) => {
+              let row = ``;
+              let button = ``;
+              $.each(data.data, (key, val) => {
+                button += `
+                <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                    <a href="#" onclick="showLogbook('${val._id}')" class="stretched-link">Sesi Ke-${key + 1}</a>
+                </div>
+            `
+                row += `
+            <tr><td>Ke - ${key + 1}</td>
                 <td>${new Date(val.date).toLocaleDateString()}</td>
                 <td>
                   <div class="btn-group">
@@ -176,48 +198,102 @@
                 </td>
             </tr>
             `
+              })
+              table.html(row);
+              $('#buttonSesi').html(button);
+            })
+            .fail((err) => {
+              console.log(err);
+              alert('gagal mengambil data');
+            });
+        }
+
+        function showLogbook(id) {
+          idLogbook = id;
+          $.ajax({
+            url: `/api/logbook/id/${id}`,
+            method: 'GET',
+            headers: { Authorization: `Bearer ${token}` }
           })
-          table.html(row);
-        })
-        .fail((err) => {
-          console.log(err);
-          alert('gagal mengambil data');
-        });
-      }
+            .done(function (data) {
+              console.log(data);
+            })
+            .fail(function (err, jQxHr, status) {
+              alert('Gagal mengambil data')
+              console.log(err);
+            })
+          console.log(id);
+        }
 
-      function submitForm() {
-        let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
-        token = token.replace('AuthToken=', '');
-        const data = {
-          namaMahasiswa: '<%- user.data.nama %>',
-          nimMahasiswa: '<%- user.data.nim %>',
-          namaDosen: '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>',
-          nipDosen: '<%- user.data.nip %>',
-          date: $('input[name="tanggalSesiKonsultasi"]').val()
-        };
-        $.ajax({
-          method: 'POST',
-          url: `/api/logbook`,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify(data),
-        })
-        .done((data) => {
+        function submitForm() {
+          const data = {
+            namaMahasiswa: '<%- user.data.nama %>',
+            nimMahasiswa: '<%- user.data.username %>',
+            date: $('input[name="tanggalSesiKonsultasi"]').val(),
+            namaDosen: '<%- dosenPa.data.dosen %>',
+            nipDosen: '<%- dosenPa.data.nip %>'
+          };
           console.log(data);
-          modalTambah.modal('hide');
-          getAllSesi();
-          alert('Berhasil Menambahkan data');
-        })
-        .fail((err) => {
-          console.log(err);
-          alert(err.statusText);
-        })
-      }
+          $.ajax({
+            method: 'POST',
+            url: `/api/logbook`,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(data),
+          })
+            .done((data) => {
+              console.log(data);
+              modalTambah.modal('hide');
+              getAllSesi();
+              alert('Berhasil Menambahkan data');
+            })
+            .fail((err) => {
+              console.log(err);
+              alert(err.statusText);
+            })
+        }
 
-      $('#buttonTambahSesi').click((e) => {
-      })
-    </script>
-</body>
-</html> 
+        $('#formMasalah').submit(function (e) {
+          e.preventDefault()
+          console.log('submit form masalah');
+          if (idLogbook === '') {
+            alert('Silahkan pilih sesi')
+            return
+          }
+          const data = {
+            '$push':
+            {
+              notes: {
+                title: $('input[name="titleMasalah"]').val(),
+                content: $('textarea[name="contentMasalah"]').val(),
+              }
+            }
+          }
+          console.log(data);
+          $.ajax({
+            method: 'PUT',
+            url: `/api/logbook/id/${idLogbook}`,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(data)
+          })
+            .done(function (data) {
+              console.log(data);
+              alert('berhasil')
+            })
+            .fail(function (error) {
+              console.log(err);
+              alert(err.statusText);
+            })
+        })
+
+        $('#buttonTambahSesi').click((e) => {
+        })
+      </script>
+  </body>
+
+  </html>

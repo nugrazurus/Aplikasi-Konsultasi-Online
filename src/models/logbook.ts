@@ -36,19 +36,19 @@ const logbookSchema: Schema = new Schema(
     namaMahasiswa: { type: String, required: true },
     nimMahasiswa: { type: String, required: true },
     date: { type: Date, required: true },
-    notes: {
+    notes: [{
       title: String,
       content: String,
-    },
-    actions: {
+    }],
+    actions: [{
       title: String,
       content: String,
-    },
-    attachments: {
+    }],
+    attachments: [{
       file: String,
       originalName: String,
       originalExt: String,
-    },
+    }],
     dateVerified: Date,
   },
   {

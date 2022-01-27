@@ -67,3 +67,16 @@ export const getPicByNip = async (nip: string) => {
       return new TextDecoder().decode(uint8);
     });
 };
+
+export const getDosenPA = async (nim: string = 'a') => {
+  return await axios
+    .get(
+      `${process.env.ENDPOINT_DOSPEM}/siakad-bimbingan/api/mahasiswa/${nim}?token=MDPBMg40AIGu9IGU5N2uWFz2nb3TncooK5vSoGt2gCtJNbA25U`,
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};

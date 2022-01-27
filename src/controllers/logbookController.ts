@@ -26,7 +26,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const show = async (req: Request, res: Response): Promise<void> => {
+export const showByNim = async (req: Request, res: Response): Promise<void> => {
   try {
     const logbook = await Logbook.find({ nimMahasiswa: req.params.nim }).sort([['createdAt', 1]]);
     const apiNgage = {
@@ -38,6 +38,22 @@ export const show = async (req: Request, res: Response): Promise<void> => {
       message: 'success',
       data: logbook,
       apiNgage: apiNgage,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+export const show = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const logbook = await Logbook.findOne({ _id: req.params.id }).sort([['createdAt', 1]]);
+    res.json({
+      status: true,
+      message: 'success',
+      data: logbook,
     });
   } catch (error) {
     res.status(500).json({
@@ -67,11 +83,12 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const update = await Logbook.findOneAndUpdate({ _id: req.body.id }, req.body);
+    const update = await Logbook.findOneAndUpdate({ _id: req.params.id }, req.body);
     res.json({
       status: true,
       message: 'success',
       data: update,
+      body: req.body
     });
   } catch (error) {
     res.status(500).json({

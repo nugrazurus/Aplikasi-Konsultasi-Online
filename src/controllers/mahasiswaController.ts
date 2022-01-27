@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { getDosenPA } from '../service/siakad';
 import { tampilTanggal } from './dosenController';
 
 const tanggal = tampilTanggal();
@@ -14,7 +15,8 @@ export const index = async (req: Request, res: Response): Promise<void> => {
 
 export const logbook = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.render('mahasiswa/logbook');
+    const dosenPa = await getDosenPA(res.locals.user.data.username)
+    res.render('mahasiswa/logbook', {dosenPa: dosenPa});
   } catch (error) {
     console.error(error);
     res.render('_404');

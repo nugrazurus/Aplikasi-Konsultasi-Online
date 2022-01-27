@@ -43,6 +43,7 @@
       const nama = '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>';
       let dataSesiMhs;
       let apiNgage;
+      let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
       token = token.replace('AuthToken=', '');
       $('select[name="nim"]').change(function () {
         const nim = $(this).val();

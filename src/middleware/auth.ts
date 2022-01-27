@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { tampilTanggal } from '../controllers/dosenController';
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.headers);
+  // console.log(req.headers);
   const tokenHeader = `${req.headers['authorization']}`;
   if (tokenHeader.split(' ')[0] !== 'Bearer') {
     return res.status(403).json({
@@ -25,7 +25,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
         message: err,
       });
     }
-    console.log(decoded);
+    // console.log(decoded);
     next();
   });
 };
@@ -60,6 +60,7 @@ export const mahasiswaAuth = (req: Request, res: Response, next: NextFunction) =
     res.locals.role = 'mahasiswa';
     res.locals.tanggal = tampilTanggal();
     res.locals.user = decoded;
+    res.locals.angkatan = `20${decoded.data.username.substring(5, 7)}`;
     next();
   });
 };
