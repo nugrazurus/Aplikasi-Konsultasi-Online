@@ -8,9 +8,23 @@
             <div class="d-flex flex-column mb-4 bimbingan">
                 <p class="title">Selamat Datang</p>
                 <p class="title"><%- user.data.nama %> </p>
-                <p class="text-muted mb-2">Berikut adalah statistik bimbingan anda</p>
-                <div class="row mx-1">
+                <div class="row" style="margin-left: 0.1rem;">
                     <div class="konsul col-4 px-0">
+                        <p class="text-muted mb-2">Berikut adalah statistik bimbingan anda</p>
+                        <div class="card mb-2">
+                            <div class="d-flex flex-row px-4 py-4">
+                                <a href="#" class="d-flex px-4 py-4" style="border-radius: 10px; background-color: #49C39F;">
+                                    <img src="/static/assets/img/chart.svg" alt="">
+                                </a>
+                                <div class="d-flex flex-column justify-content-center ps-3">
+                                    <p class="mb-0">Sudah Konsultasi Bulan ini</p>
+                                    <p class="mb-0"><span style="color: #49C39F; font-size: 28px; font-weight: 600;">1</span> Mahasiswa</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="konsul col-4 px-0">
+                        <p class="text-muted mb-2">Berikut adalah statistik bimbingan anda</p>
                         <div class="card mb-2">
                             <div class="d-flex flex-row px-4 py-4">
                                 <a href="#" class="d-flex px-4 py-4" style="border-radius: 10px; background-color: #49C39F;">
@@ -46,6 +60,6 @@
             </div> -->
         </div>
     </div>
-    <% include('../_partial/include_js') %> 
+    <%- include('../_partial/include_js') %> 
 </body>
 </html>
