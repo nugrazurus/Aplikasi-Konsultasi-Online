@@ -77,7 +77,7 @@
                             <textarea class="form-control" name="contentMasalah" rows="4"
                               placeholder="Tulis catatan atau kendala anda disini"></textarea>
                             <div class="d-flex w-100 justify-content-end">
-                              <button type="submit" class="btn btn-primary px-3 my-2"><span
+                              <button type="submit" id="buttonMasalah" class="btn btn-primary px-3 my-2"><span
                                   class="iconly-Send icli"></span></button>
                             </div>
                           </form>
@@ -93,8 +93,8 @@
                       </h2>
                       <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                         <div class="accordion-body">
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
-                            placeholder="Tulis hal yang harus dilakukan mahasiswa ini disini"></textarea>
+                          <textarea class="form-control" name="contentAction" rows="4"
+                            placeholder="hal yang harus anda lakukan" disabled></textarea>
                         </div>
                       </div>
                     </div>
@@ -107,12 +107,15 @@
                       </h2>
                       <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                         <div class="accordion-body">
-                          <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
-                          collapse plugin adds the appropriate classes that we use to style each element. These classes
-                          control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                          modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                          that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-                          does limit overflow.
+                          <div class="mb-3">
+                            <form id="formLampiran" action="#" method="post">
+                              <label for="formFile" class="form-label">Masukkan lampiran dengan format pdf</label>
+                              <div class="d-flex">
+                                <input class="form-control" type="file" name="attachment" id="attachment"> 
+                                <button class="btn btn-primary px-2 mx-2"><span class="iconly-Send icli"></span></button>
+                              </div>
+                            </form>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -178,7 +181,7 @@
               let button = ``;
               $.each(data.data, (key, val) => {
                 button += `
-                <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                <div id="${val._id}" class="button-sesi card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
                     <a href="#" onclick="showLogbook('${val._id}')" class="stretched-link">Sesi Ke-${key + 1}</a>
                 </div>
             `
@@ -210,19 +213,45 @@
 
         function showLogbook(id) {
           idLogbook = id;
+          const button = $('.button-sesi')
+          $.each(button, function(key, val){
+            if (val.id === idLogbook) {
+              $(val).css('border', '1px solid #48C39F').children('a').css('color', '#48C39F')
+            } else {
+              $(val).css('border', "1px solid rgba(0,0,0,.125)").children('a').css('color', 'black')
+            }
+          })
           $.ajax({
             url: `/api/logbook/id/${id}`,
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` }
           })
             .done(function (data) {
+              if (data.data.notes) {
+                $('#buttonMasalah').hide()
+                $('input[name="titleMasalah"]').val(data.data.notes.title).attr('disabled', true)
+                $('textarea[name="contentMasalah"]').val(data.data.notes.content).attr('disabled', true)
+              } else {
+                $('#buttonMasalah').show()
+                $('input[name="titleMasalah"]').val('').attr('disabled', false)
+                $('textarea[name="contentMasalah"]').val('').attr('disabled', false)
+              }
+              if (data.data.actions) {
+                
+              } else {
+
+              }
+              if (data.data.attachments) {
+                
+              } else {
+
+              }
               console.log(data);
             })
             .fail(function (err, jQxHr, status) {
               alert('Gagal mengambil data')
               console.log(err);
             })
-          console.log(id);
         }
 
         function submitForm() {
@@ -262,14 +291,20 @@
             alert('Silahkan pilih sesi')
             return
           }
+          // const data = {
+          //   '$push':
+          //   {
+          //     notes: {
+          //       title: $('input[name="titleMasalah"]').val(),
+          //       content: $('textarea[name="contentMasalah"]').val(),
+          //     }
+          //   }
+          // }
           const data = {
-            '$push':
-            {
               notes: {
                 title: $('input[name="titleMasalah"]').val(),
                 content: $('textarea[name="contentMasalah"]').val(),
               }
-            }
           }
           console.log(data);
           $.ajax({
@@ -284,11 +319,19 @@
             .done(function (data) {
               console.log(data);
               alert('berhasil')
+              getAllSesi()
             })
             .fail(function (error) {
               console.log(err);
               alert(err.statusText);
             })
+        })
+
+        $('#formLampiran').submit(function(e) {
+          e.preventDefault()
+          let form = $(this)
+          let formData = new FormData(form[0])
+          
         })
 
         $('#buttonTambahSesi').click((e) => {

@@ -2,9 +2,9 @@ import mongoose, { Schema } from 'mongoose';
 
 interface Logbook {
   date: Date;
-  notes: Note[];
-  action: Action[];
-  attachments: Attachment[];
+  notes: Note;
+  action: Action;
+  attachments: Attachment;
   supervisorComment: string;
   roomName: string;
   startTime: Date;
@@ -36,19 +36,18 @@ const logbookSchema: Schema = new Schema(
     namaMahasiswa: { type: String, required: true },
     nimMahasiswa: { type: String, required: true },
     date: { type: Date, required: true },
-    notes: [{
+    notes: {
       title: String,
       content: String,
-    }],
-    actions: [{
-      title: String,
+    },
+    actions: {
       content: String,
-    }],
-    attachments: [{
+    },
+    attachments: {
       file: String,
       originalName: String,
       originalExt: String,
-    }],
+    },
     dateVerified: Date,
   },
   {

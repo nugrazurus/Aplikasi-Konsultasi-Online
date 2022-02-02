@@ -1,4 +1,7 @@
 import Logbook from '../models/logbook';
+import fs from 'fs';
+import slug from 'slug';
+import path from 'path';
 import { Request, Response } from 'express';
 
 const randomString = () => {
@@ -83,7 +86,32 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const update = await Logbook.findOneAndUpdate({ _id: req.params.id }, req.body);
+    const update = await Logbook.findOne({ _id: req.params.id });
+    if(req.file){
+      if (req.file.mimetype == 'application/pdf') {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const filename = slug(`Lampiran ${update.nimMahasiswa} ${uniqueSuffix}`)+`${path.extname(req.file.originalname)}`;
+        fs.writeFile(`./uploads/${filename}`, req.file.buffer, (err) => {
+          if (err) {
+            console.error(err);
+          } else {
+            update.updateOne({
+              attachments:{
+                file: filename,
+                originalName: req.file.originalname,
+                originalExt: path.extname(req.file.originalname)
+              }
+            })
+            console.log('file successfully saved');
+          }
+        })
+      } else {
+        throw new Error("File yang diupload bukan PDF");
+      }
+    } else {
+      update.updateOne(req.body)
+    }
+
     res.json({
       status: true,
       message: 'success',
