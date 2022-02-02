@@ -10,6 +10,7 @@ interface Logbook {
   startTime: Date;
   nipDosen: string;
   nimMahasiswa: string;
+  verified: boolean;
 }
 
 interface Note {
@@ -48,6 +49,7 @@ const logbookSchema: Schema = new Schema(
       originalName: String,
       originalExt: String,
     },
+    verified: { type: Boolean, default: false },
     dateVerified: Date,
   },
   {

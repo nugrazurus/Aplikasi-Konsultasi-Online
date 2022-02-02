@@ -12,4 +12,5 @@ router.post('/logbook', logbookController.create);
 router.get('/logbook/:nim', logbookController.showByNim);
 router.get('/logbook/id/:id', logbookController.show);
 router.put('/logbook/id/:id', upload.single('lampiran'), logbookController.update);
+router.delete('/logbook/id/:id', logbookController.destroy);
 export default router;

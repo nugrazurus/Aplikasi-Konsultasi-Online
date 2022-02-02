@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import express, { Router, Request, Response } from 'express';
 import * as controller from '../controllers/indexController';
 import * as authController from '../controllers/authController';
 const router = Router();

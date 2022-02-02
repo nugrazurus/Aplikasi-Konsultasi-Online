@@ -29,6 +29,7 @@ app.use(cors());
 app.use(cookieParser());
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
+app.use('/storage', express.static(path.join(__dirname, './uploads')));
 app.use('/static', express.static(path.join(__dirname, './public')));
 app.use('/api', apiRoute);
 app.use('/dosen', dosenRoute);

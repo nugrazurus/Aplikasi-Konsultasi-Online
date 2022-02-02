@@ -88,14 +88,15 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const update = await Logbook.findOne({ _id: req.params.id });
     if(req.file){
+      console.log('ade');
+      
       if (req.file.mimetype == 'application/pdf') {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const filename = slug(`Lampiran ${update.nimMahasiswa} ${uniqueSuffix}`)+`${path.extname(req.file.originalname)}`;
-        fs.writeFile(`./uploads/${filename}`, req.file.buffer, (err) => {
+        const filename = slug(`${update._id} Lampiran ${update.nimMahasiswa}`)+`${path.extname(req.file.originalname)}`;
+        fs.writeFile(path.join(__dirname, `../uploads/${filename}`), req.file.buffer, async (err) => {
           if (err) {
             console.error(err);
           } else {
-            update.updateOne({
+            await update.update({
               attachments:{
                 file: filename,
                 originalName: req.file.originalname,
@@ -109,7 +110,9 @@ export const update = async (req: Request, res: Response): Promise<void> => {
         throw new Error("File yang diupload bukan PDF");
       }
     } else {
-      update.updateOne(req.body)
+      console.log('ndak ade file');
+      
+      await update.updateOne(req.body)
     }
 
     res.json({
@@ -128,13 +131,22 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 
 export const destroy = async (req: Request, res: Response): Promise<void> => {
   try {
-    const destroy = await Logbook.deleteOne({ _id: req.body.id });
+    const destroy = await Logbook.findOne({ _id: req.params.id });
+    fs.rm(path.join(__dirname, `../uploads/${destroy.attachments.file}`), (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Success delete file');
+      }
+    })
+    await destroy.deleteOne()
     res.json({
       status: true,
       message: 'success',
       data: destroy,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       status: false,
       message: error.message,
