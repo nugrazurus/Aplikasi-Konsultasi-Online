@@ -85,6 +85,7 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
         }
         break;
       default:
+        res.render('login', {message: 'Anda belum memilih role'});
         break;
     }
   } catch (error) {

@@ -96,7 +96,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
           if (err) {
             console.error(err);
           } else {
-            await update.update({
+            await update.updateOne({
               attachments:{
                 file: filename,
                 originalName: req.file.originalname,
@@ -111,6 +111,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
       }
     } else {
       console.log('ndak ade file');
+      console.log(req.body);
       
       await update.updateOne(req.body)
     }
@@ -118,7 +119,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
     res.json({
       status: true,
       message: 'success',
-      data: update,
+      data: await Logbook.findOne({_id: req.params.id}),
       body: req.body
     });
   } catch (error) {

@@ -38,19 +38,19 @@ const logbookSchema: Schema = new Schema(
     nimMahasiswa: { type: String, required: true },
     date: { type: Date, required: true },
     notes: {
-      title: String,
-      content: String,
+      title: { type: String, default: null },
+      content: { type: String, default: null },
     },
     actions: {
-      content: String,
+      content: { type: String, default: null },
     },
     attachments: {
-      file: String,
-      originalName: String,
-      originalExt: String,
+      file: { type: String, default: null },
+      originalName: { type: String, default: null },
+      originalExt: { type: String, default: null },
     },
     verified: { type: Boolean, default: false },
-    dateVerified: Date,
+    dateVerified: { type: Date, default: null },
   },
   {
     timestamps: true,
