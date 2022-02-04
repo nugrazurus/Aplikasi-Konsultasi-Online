@@ -40,7 +40,23 @@ export const showByNim = async (req: Request, res: Response): Promise<void> => {
       status: true,
       message: 'success',
       data: logbook,
-      apiNgage: apiNgage,
+      // apiNgage: apiNgage,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+export const showByNip = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const logbook = await Logbook.find({ nipDosen: req.params.nip }).sort([['createdAt', 1]]);
+    res.json({
+      status: true,
+      message: 'success',
+      data: logbook,
     });
   } catch (error) {
     res.status(500).json({
@@ -87,40 +103,41 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const update = await Logbook.findOne({ _id: req.params.id });
-    if(req.file){
+    if (req.file) {
       console.log('ade');
-      
+
       if (req.file.mimetype == 'application/pdf') {
-        const filename = slug(`${update._id} Lampiran ${update.nimMahasiswa}`)+`${path.extname(req.file.originalname)}`;
+        const filename =
+          slug(`${update._id} Lampiran ${update.nimMahasiswa}`) + `${path.extname(req.file.originalname)}`;
         fs.writeFile(path.join(__dirname, `../uploads/${filename}`), req.file.buffer, async (err) => {
           if (err) {
             console.error(err);
           } else {
             await update.updateOne({
-              attachments:{
+              attachments: {
                 file: filename,
                 originalName: req.file.originalname,
-                originalExt: path.extname(req.file.originalname)
-              }
-            })
+                originalExt: path.extname(req.file.originalname),
+              },
+            });
             console.log('file successfully saved');
           }
-        })
+        });
       } else {
-        throw new Error("File yang diupload bukan PDF");
+        throw new Error('File yang diupload bukan PDF');
       }
     } else {
       console.log('ndak ade file');
       console.log(req.body);
-      
-      await update.updateOne(req.body)
+
+      await update.updateOne(req.body);
     }
 
     res.json({
       status: true,
       message: 'success',
-      data: await Logbook.findOne({_id: req.params.id}),
-      body: req.body
+      data: await Logbook.findOne({ _id: req.params.id }),
+      // body: req.body,
     });
   } catch (error) {
     res.status(500).json({
@@ -139,8 +156,8 @@ export const destroy = async (req: Request, res: Response): Promise<void> => {
       } else {
         console.log('Success delete file');
       }
-    })
-    await destroy.deleteOne()
+    });
+    await destroy.deleteOne();
     res.json({
       status: true,
       message: 'success',

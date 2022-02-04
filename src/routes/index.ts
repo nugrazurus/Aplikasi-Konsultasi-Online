@@ -10,7 +10,13 @@ router.get('/login', authController.loginIndex);
 router.post('/login', authController.loginServerSide);
 router.get('/logout', authController.logout);
 router.use('*', (req: Request, res: Response) => {
-  res.status(404).render('_404');
+  if (req.headers['accept'] == 'application/json') {
+    res.status(404).json({
+      message: 'URL NOT FOUND'
+    })
+  } else {
+    res.status(404).render('_404');
+  }
 });
 
 export default router;

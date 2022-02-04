@@ -13,7 +13,7 @@ function getAllSesi() {
       Authorization: `Bearer ${token}`,
     },
     async: false,
-    url: `/api/logbook/${nim}`,
+    url: `/api/logbook/mahasiswa/${nim}`,
   })
     .done((data) => {
       dataSesiMhs = data.data;
@@ -150,7 +150,7 @@ $('#logbook').on('submit', function (e) {
   if ($('input[name="lampiran"]').val()) {
     formData = new FormData(form);
     settings = {
-      url: `/api/logbook/id/${data._id}`,
+      url: `/api/logbook/${data._id}`,
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -171,7 +171,7 @@ $('#logbook').on('submit', function (e) {
      }
     }
     settings = {
-      url: `/api/logbook/id/${data._id}`,
+      url: `/api/logbook/${data._id}`,
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -21,7 +21,7 @@ function getAllSesi() {
       Authorization: `Bearer ${token}`,
     },
     async: false,
-    url: `/api/logbook/${nim}`,
+    url: `/api/logbook/mahasiswa/${nim}`,
   })
     .done((data) => {
       let row = ``;
@@ -77,7 +77,7 @@ function showLogbook(id) {
     }
   });
   $.ajax({
-    url: `/api/logbook/id/${id}`,
+    url: `/api/logbook/${id}`,
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -186,7 +186,7 @@ $('#formMasalah').submit(function (e) {
   console.log(data);
   $.ajax({
     method: 'PUT',
-    url: `/api/logbook/id/${idLogbook}`,
+    url: `/api/logbook/${idLogbook}`,
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ $('#formLampiran').submit(function (e) {
   }
   $.ajax({
     method: 'PUT',
-    url: `/api/logbook/id/${idLogbook}`,
+    url: `/api/logbook/${idLogbook}`,
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -277,7 +277,7 @@ $('#formLampiran').submit(function (e) {
 function hapusSesi(id) {
   $.ajax({
     method: 'DELETE',
-    url: `/api/logbook/id/${id}`,
+    url: `/api/logbook/${id}`,
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
