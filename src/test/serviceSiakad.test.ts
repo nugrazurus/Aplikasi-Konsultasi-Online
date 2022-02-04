@@ -7,14 +7,13 @@ import * as service from '../service/siakad';
 //     })
 // })
 
-jest.mock('axios')
+jest.mock('axios');
 
 describe('login mahasiswa', () => {
-    test('login', async () => {
-        const successHandler = jest.fn()
-        const errorHandler = jest.fn()
-        // const login = 
-        // const login = await service.loginSiakadMahasiswa('asd', 'asd');
-
-    })
-})
+  test('login', async () => {
+    const successHandler = jest.fn();
+    const errorHandler = jest.fn();
+    // const login =
+    // const login = await service.loginSiakadMahasiswa('asd', 'asd');
+  });
+});

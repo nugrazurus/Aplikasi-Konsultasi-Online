@@ -12,8 +12,8 @@ router.get('/logout', authController.logout);
 router.use('*', (req: Request, res: Response) => {
   if (req.headers['accept'] == 'application/json') {
     res.status(404).json({
-      message: 'URL NOT FOUND'
-    })
+      message: 'URL NOT FOUND',
+    });
   } else {
     res.status(404).render('_404');
   }

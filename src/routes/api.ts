@@ -7,7 +7,7 @@ import * as authController from '../controllers/authController';
 const router = Router();
 const upload = multer();
 
-router.post('/generate-token', authController.login)
+router.post('/generate-token', authController.login);
 router.all('/logbook*', verifyToken);
 router.get('/periodelirs', controller.getPeriodeLirs);
 router.post('/logbook', logbookController.create);

@@ -38,7 +38,7 @@ const generateToken = (user: User) => {
 
 export const loginIndex = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.locals.message = ''
+    res.locals.message = '';
     res.status(200).render('login');
   } catch (error) {
     res.status(500).render('_404');
@@ -77,11 +77,11 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
           res.cookie('AuthToken', generateToken(data));
           res.status(200).redirect('dosen');
         } else {
-          res.status(403).render('login', {message: 'Username atau password anda salah'})
+          res.status(403).render('login', { message: 'Username atau password anda salah' });
         }
         break;
       default:
-        res.render('login', {message: 'Anda belum memilih role'});
+        res.render('login', { message: 'Anda belum memilih role' });
         break;
     }
   } catch (error) {
@@ -109,10 +109,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
           res.json({
             status: true,
             message: 'Berhasil generate token',
-            token: generateToken(data)
+            token: generateToken(data),
           });
         } else {
-          throw new Error("Username atau password anda salah");
+          throw new Error('Username atau password anda salah');
         }
         break;
       case 'dosen':
@@ -127,19 +127,19 @@ export const login = async (req: Request, res: Response): Promise<void> => {
           res.json({
             status: true,
             message: 'Berhasil generate token',
-            token: generateToken(data)
+            token: generateToken(data),
           });
         } else {
-          throw new Error("Username atau password anda salah");
+          throw new Error('Username atau password anda salah');
         }
         break;
       default:
-        throw new Error("Role tidak ditemukan");
+        throw new Error('Role tidak ditemukan');
     }
   } catch (error) {
     res.status(403).json({
       status: false,
-      message: error
+      message: error,
     });
   }
 };
