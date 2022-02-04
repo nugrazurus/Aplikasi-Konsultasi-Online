@@ -132,7 +132,12 @@ $('#selectLogbook').on('change', function () {
       break;
     case "3":
       logbook.html(`
-        <div class="d-flex flex-column my-2 mx-2 align-items-end">
+        <div class="d-flex flex-row my-2 mx-2 align-items-end">
+        ${data.attachments.file ? `<a href="/storage/${data.attachments.file}" class="btn btn-primary" target="_blank">Lampiran</a>` : `
+        <input class="form-control" type="file" name="lampiran">
+        <button class="btn btn-primary px-2 mx-2"><span
+            class="iconly-Send icli"></span></button>
+            `}
         </div>
       `)
       break;
@@ -183,14 +188,11 @@ $('#logbook').on('submit', function (e) {
   }
   $.ajax(settings)
   .done(function (res) {
-    console.log(res);
     if (!res.data) {
-      res = JSON.parse(res).data
+      res = JSON.parse(res)
     }
-    data = res;
-    // console.log(data);
-    $('#logbook').trigger('change');
-    alert('berhasil')
+    data = res.data;
+    if(formData.notes) {$('#selectLogbook').trigger('change')}
     Swal.fire({
       title: 'Berhasil',
       text: '',
