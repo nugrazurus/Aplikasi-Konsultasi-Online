@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getPicByNim, getPicByNip } from '../service/siakad';
 import Logbook from '../models/logbook';
 import { tampilTanggal } from './dosenController';
+import jwt from 'jsonwebtoken';
 
 export const index = async (req: Request, res: Response): Promise<void> => {
   res.redirect('/login');
@@ -52,9 +53,24 @@ export const bimbingan = async (req: Request, res: Response) => {
       default:
         return res.render('_404');
     }
-    const data = JSON.stringify({ logbook, role });
+    const data = JSON.stringify({ logbook, role, token: generateToken(logbook) });
     return res.render('bimbingan', { data: data });
   } catch (error) {
     return res.status(500).send('_500');
   }
+};
+
+const generateToken = (data: any) => {
+  const jwtExp: number = parseInt(process.env.JWT_EXPIRATION_IN_MINUTES);
+  const expiration: number = 60 * jwtExp;
+  const token = jwt.sign(
+    {
+      data,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: expiration,
+    },
+  );
+  return token;
 };

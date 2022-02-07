@@ -34,7 +34,8 @@
   </div>
   <%- include('_partial/include_js') %> 
   <script>
-      const data = JSON.parse('<%- data %>');
+      let data = JSON.parse('<%- data %>');
+      const token = data.token;
   </script>
   <script src="/static/assets/js/bimbingan.js"></script>
 </body>

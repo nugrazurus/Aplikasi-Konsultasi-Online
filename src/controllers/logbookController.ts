@@ -31,15 +31,21 @@ export const index = async (req: Request, res: Response): Promise<void> => {
 
 export const showByNim = async (req: Request, res: Response): Promise<void> => {
   try {
-    const logbook = await Logbook.find({ nimMahasiswa: req.params.nim }).sort([['createdAt', 1]]);
-    const apiNgage = {
-      apiId: process.env.API_ID,
-      apiKey: process.env.API_KEY,
-    };
+    const logbook = await Logbook.find({ nimMahasiswa: req.params.nim })
+      .sort([['createdAt', 1]])
+      .exec();
+    // const apiNgage = {
+    //   apiId: process.env.API_ID,
+    //   apiKey: process.env.API_KEY,
+    // };
+    const data = logbook.map((val) => {
+      const url = `http://${req.headers.host}/bimbingan/mahasiswa/${val.roomName}`;
+      return { ...val.toObject(), url };
+    });
     res.json({
       status: true,
       message: 'success',
-      data: logbook,
+      data: data,
       // apiNgage: apiNgage,
     });
   } catch (error) {
@@ -53,10 +59,14 @@ export const showByNim = async (req: Request, res: Response): Promise<void> => {
 export const showByNip = async (req: Request, res: Response): Promise<void> => {
   try {
     const logbook = await Logbook.find({ nipDosen: req.params.nip }).sort([['createdAt', 1]]);
+    const data = logbook.map((val) => {
+      const url = `http://${req.headers.host}/bimbingan/mahasiswa/${val.roomName}`;
+      return { ...val.toObject(), url };
+    });
     res.json({
       status: true,
       message: 'success',
-      data: logbook,
+      data: data,
     });
   } catch (error) {
     res.status(500).json({

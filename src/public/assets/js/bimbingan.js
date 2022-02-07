@@ -3,6 +3,7 @@ $(document).ready(function () {
 });
 
 function initNgage() {
+  console.log(data);
   const roomName = data.logbook.roomName;
   const date = new Date();
   let dateSesi = new Date(data.logbook.date);
@@ -91,7 +92,7 @@ $('#selectLogbook').on('change', function () {
           <textarea class="form-control mb-2" name="notesContent" value="${
             data.logbook.notes.content ? data.logbook.notes.content + '" disabled' : ''
           } rows="4"" placeholder="Isi dari masalah yang ingin di konsultasikan" required>${
-        data.notes.content
+        data.logbook.notes.content
           ? data.logbook.notes.content + '</textarea>'
           : `</textarea>
           <button class="btn btn-primary px-2 mx-2" type="submit"><span class="iconly-Send icli"></span></button>
@@ -111,7 +112,7 @@ $('#selectLogbook').on('change', function () {
       logbook.html(`
         <div class="d-flex flex-row my-2 mx-2 align-items-end">
         ${
-          data.attachments.file
+          data.logbook.attachments.file
             ? `<a href="/storage/${data.logbook.attachments.file}" class="btn btn-primary" target="_blank">Lampiran</a>`
             : `
         <input class="form-control" type="file" name="lampiran">
