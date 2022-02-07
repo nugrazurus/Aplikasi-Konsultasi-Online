@@ -44,8 +44,8 @@ $('select[name="sesi"]').change(function () {
       icon: 'warning',
       confirmButtonText: 'Tutup',
       timer: 1500,
-    })  
-    return
+    });
+    return;
   }
   if (date.getTime() >= dateSesi.getTime()) {
     $('#videoconf').html('');
@@ -107,50 +107,62 @@ $('#selectLogbook').on('change', function () {
       confirmButtonText: 'Tutup',
       timer: 1500,
     });
-    return
+    return;
   }
-  const logbook = $('#logbook')
+  const logbook = $('#logbook');
   switch (this.value) {
-    case "1":
-        logbook.html(`
+    case '1':
+      logbook.html(`
           <div class="d-flex flex-column my-2 mx-2 align-items-end">
           <label>Judul Masalah</label>
-          <input type="text" class="form-control" name="notesTitle" value="${data.notes.title? data.notes.title+'" disabled' : '"'} placeholder="Judul dari masalah yang ingin dikonsultasikan"></input>
+          <input type="text" class="form-control" name="notesTitle" value="${
+            data.notes.title ? data.notes.title + '" disabled' : '"'
+          } placeholder="Judul dari masalah yang ingin dikonsultasikan"></input>
           <label>Isi Masalah</label>
-          <textarea class="form-control mb-2" name="notesContent" value="${data.notes.content? data.notes.content+'" disabled' : ''} rows="4"" placeholder="Isi dari masalah yang ingin di konsultasikan" required>${data.notes.content? data.notes.content+'</textarea>' : `</textarea>
+          <textarea class="form-control mb-2" name="notesContent" value="${
+            data.notes.content ? data.notes.content + '" disabled' : ''
+          } rows="4"" placeholder="Isi dari masalah yang ingin di konsultasikan" required>${
+        data.notes.content
+          ? data.notes.content + '</textarea>'
+          : `</textarea>
           <button class="btn btn-primary px-2 mx-2" type="submit"><span class="iconly-Send icli"></span></button>
-          </div>`}
+          </div>`
+      }
         `);
       break;
-    case "2":
+    case '2':
       logbook.html(`
         <div class="d-flex flex-column my-2 mx-2 align-items-end">
         <label>Hal yang harus dilakukan</label>
         <textarea class="form-control" value="${data.actions.content}" rows="4" disabled placeholder="Hal yang harus anda lakukan"></textarea>
         </div>
-      `)
+      `);
       break;
-    case "3":
+    case '3':
       logbook.html(`
         <div class="d-flex flex-row my-2 mx-2 align-items-end">
-        ${data.attachments.file ? `<a href="/storage/${data.attachments.file}" class="btn btn-primary" target="_blank">Lampiran</a>` : `
+        ${
+          data.attachments.file
+            ? `<a href="/storage/${data.attachments.file}" class="btn btn-primary" target="_blank">Lampiran</a>`
+            : `
         <input class="form-control" type="file" name="lampiran">
         <button class="btn btn-primary px-2 mx-2"><span
             class="iconly-Send icli"></span></button>
-            `}
+            `
+        }
         </div>
-      `)
+      `);
       break;
     default:
       return;
   }
-})
+});
 
 $('#logbook').on('submit', function (e) {
   e.preventDefault();
   const form = $(this)[0];
-  let formData
-  let settings
+  let formData;
+  let settings;
   console.log(data);
   if ($('input[name="lampiran"]').val()) {
     formData = new FormData(form);
@@ -159,7 +171,7 @@ $('#logbook').on('submit', function (e) {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: 'application/json'
+        Accept: 'application/json',
       },
       processData: false,
       mimeType: 'multipart/form-data',
@@ -170,39 +182,40 @@ $('#logbook').on('submit', function (e) {
   } else {
     console.log('json');
     formData = {
-     notes: {
-       title: $('input[name="notesTitle"]').val(),
-       content: $('textarea[name="notesContent"]').val()
-     }
-    }
+      notes: {
+        title: $('input[name="notesTitle"]').val(),
+        content: $('textarea[name="notesContent"]').val(),
+      },
+    };
     settings = {
       url: `/api/logbook/${data._id}`,
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify(formData),
     };
   }
   $.ajax(settings)
-  .done(function (res) {
-    if (!res.data) {
-      res = JSON.parse(res)
-    }
-    data = res.data;
-    if(formData.notes) {$('#selectLogbook').trigger('change')}
-    Swal.fire({
-      title: 'Berhasil',
-      text: '',
-      icon: 'success',
-      confirmButtonText: 'tutup',
-      timer: 1500
+    .done(function (res) {
+      if (!res.data) {
+        res = JSON.parse(res);
+      }
+      data = res.data;
+      if (formData.notes) {
+        $('#selectLogbook').trigger('change');
+      }
+      Swal.fire({
+        title: 'Berhasil',
+        text: '',
+        icon: 'success',
+        confirmButtonText: 'tutup',
+        timer: 1500,
+      });
     })
-  })
-  .fail(function(error){
-    alert(error.textStatus)
-  })
-})
-
+    .fail(function (error) {
+      alert(error.textStatus);
+    });
+});

@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
 import { getDosenPA } from '../service/siakad';
-import { tampilTanggal } from './dosenController';
-
-const tanggal = tampilTanggal();
 
 export const index = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,7 +9,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
     res.render('mahasiswa/index', { dosen: dosenPa });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ status: false, message: error });
+    res.status(500).render('_500');
   }
 };
 
@@ -22,7 +19,7 @@ export const logbook = async (req: Request, res: Response): Promise<void> => {
     res.render('mahasiswa/logbook', { dosenPa: dosenPa });
   } catch (error) {
     console.error(error);
-    res.render('_404');
+    res.status(500).render('_500');
   }
 };
 
@@ -31,7 +28,6 @@ export const konsultasi = async (req: Request, res: Response): Promise<void> => 
     const dosenPa = await getDosenPA(res.locals.user.data.username);
     res.render('mahasiswa/konsultasi', { dosenPa: dosenPa });
   } catch (error) {
-    console.error(error);
-    res.render('_404');
+    res.status(500).render('_500');
   }
 };
