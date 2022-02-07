@@ -1,9 +1,10 @@
-import express, { Router, Request, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import * as controller from '../controllers/indexController';
 import * as authController from '../controllers/authController';
 const router = Router();
 
 router.get('/', controller.index);
+router.get('/bimbingan/:role/:roomName', controller.bimbingan);
 router.get('/pic/:nim', controller.getMhsPicByNim);
 router.get('/profil/dosen/:nip', controller.getDosenPicByNip);
 router.get('/login', authController.loginIndex);

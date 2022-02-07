@@ -1,0 +1,41 @@
+<%- include('_partial/head', {title: 'Bimbingan'}) %> 
+<body>
+  <div class="d-flex flex-row main">
+      <div class="container-fluid w-75 mx-4 my-4 ngage">
+          <%- include('_partial/navbar', {title: 'Konsultasi Online', tanggal: tanggal}) %>
+          <!-- <div class="d-flex flex-row w-100 justify-content-end align-items-center">
+            <p>Sesi Konsultasi</p>
+            <div class="form-floating mx-2">
+              <select class="form-select" id="sesi" name="sesi">
+                <option value hidden>-- Pilih Sesi --</option>
+              </select>
+              <label for="floatingSelect">Pilih Sesi</label>
+            </div>
+          </div> -->
+          <div class="h-75 mt-4" id="videoconf"><div class="d-flex justify-content-center w-100 h-100 align-items-center"><p>Pilih Mahasiswa dan sesi konsultasi</p></div></div>
+      </div>
+      <div class="d-flex flex-column w-25 vh-100" style="background-color: #F5FBF9;">
+          <div class="d-flex align-items-end justify-content-start px-2 py-2" style="height: 10%; color: white; background-color: #48C39F;">
+              <p>Sesi Konsultasi <span id="sesiKe"></span></p>
+          </div>
+          <div class="d-flex px-2 py-2">
+              <div class="d-flex flex-column w-100 justify-content-end">
+                <select id="selectLogbook" class="form-select" aria-label="Default select example">
+                  <option hidden value="">-- Pilih Log --</option>
+                  <option value="1">Notes / Masalah</option>
+                  <option value="2">Hal yang Harus dilakukan</option>
+                  <option value="3">Lampiran</option>
+                </select>
+                  <form id="logbook">
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <%- include('_partial/include_js') %> 
+  <script>
+      const data = JSON.parse('<%- data %>');
+  </script>
+  <script src="/static/assets/js/bimbingan.js"></script>
+</body>
+</html>
