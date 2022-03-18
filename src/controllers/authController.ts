@@ -59,10 +59,7 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
           res.cookie('AuthToken', generateToken(data));
           res.redirect('mahasiswa');
         } else {
-          res.status(200).json({
-            status: false,
-            message: 'Username atau password anda salah',
-          });
+          res.status(403).render('login', { message: 'Username atau password anda salah' });
         }
         break;
       case 'dosen':
