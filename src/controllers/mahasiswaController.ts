@@ -4,7 +4,7 @@ import { getDosenPA } from '../service/siakad';
 export const index = async (req: Request, res: Response): Promise<void> => {
   try {
     const dosenPa = await getDosenPA(res.locals.user.data.username);
-    console.log(dosenPa);
+    // console.log(dosenPa);
 
     res.render('mahasiswa/index', { dosen: dosenPa });
   } catch (error) {

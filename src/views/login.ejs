@@ -3,44 +3,48 @@
     <body>
         <div class="d-flex position-fixed" style="top: 20px; left: 20px;">
             <img src="static/assets/img/android-chrome-512x512.png" width="50px" alt="">
-            <div class="d-flex flex-column ms-2" style="color: white;">
+            <div class="d-flex flex-column ms-2" style="color: rgb(0, 0, 0);">
                 <p class="fw-bold">Aplikasi Bimbingan Akademik</p>
                 <p>Universitas Tanjungpura</p>
             </div>
         </div>
         <div class="d-flex flex-row">
-            <div class="d-flex align-items-center justify-content-center flex-column vh-100"
-                style="width: 65%; background-color: #48C39F;">
-                <div class="d-flex w-100 justify-content-center align-items-center" style="overflow-y: hidden;">
-                    <img src="/static/assets/img/Consultation.png" width="70%" alt="">
+            <div class="col-md-8 col-12 d-none d-md-block">
+                <div class="d-flex align-items-center justify-content-center flex-column vh-100"
+                    style="background-color: #48C39F;">
+                    <div class="d-flex w-100 justify-content-center align-items-center" style="overflow-y: hidden;">
+                        <img src="/static/assets/img/Consultation.png" width="70%" alt="">
+                    </div>
                 </div>
             </div>
-            <div class="d-flex flex-column align-items-center justify-content-center vh-100" style="width: 35%;">
-                <div class="d-flex flex-column justify-content-start mx-2">
-                    <h4 class="text-muted">Halaman <%- locals.test %> </h4>
-                    <h1><b>Aplikasi Bimbingan <br>Akademik</b></h1>
-                    <p class="text-muted">Silahkan login menggunakan NIP / NIM dan password siakad</p>
-                    <form action="/login" method="post">
-                        <div class="form-floating mb-3 w-100">
-                            <input type="text" class="form-control" name="username" placeholder="Username" required>
-                            <label for="floatingInput">Username</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required>
-                            <label for="floatingPassword">Password</label>
-                        </div>
-                        <div class="form-floating">
-                            <select class="form-select" name="role" aria-label="Floating label select example" required>
-                              <option value hidden>-- Pilih Jenis Pengguna --</option>
-                              <option value="dosen">Dosen</option>
-                              <option value="mahasiswa">Mahasiswa</option>
-                            </select>
-                            <label for="floatingSelect">Pilih Jenis Pengguna</label>
-                          </div>
-                        <div class="d-flex justify-content-start">
-                            <button type="submit" class="btn btn-success px-5 py-3 my-2">Login</button>
-                        </div>
-                    </form>
+            <div class="col-md-4 col-12">
+                <div class="d-flex flex-column align-items-center justify-content-center vh-100">
+                    <div class="d-flex flex-column justify-content-start mx-5">
+                        <h4 class="text-muted">Halaman Login</h4>
+                        <h1><b>Aplikasi Bimbingan <br>Akademik</b></h1>
+                        <p class="text-muted">Silahkan login menggunakan NIP / NIM dan password siakad</p>
+                        <form action="/login" method="post">
+                            <div class="form-floating mb-3 w-100">
+                                <input type="text" class="form-control" name="username" placeholder="Username" required>
+                                <label for="floatingInput">Username</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                <label for="floatingPassword">Password</label>
+                            </div>
+                            <div class="form-floating">
+                                <select class="form-select" name="role" aria-label="Floating label select example" required>
+                                  <option value hidden>-- Pilih Jenis Pengguna --</option>
+                                  <option value="dosen">Dosen</option>
+                                  <option value="mahasiswa">Mahasiswa</option>
+                                </select>
+                                <label for="floatingSelect">Pilih Jenis Pengguna</label>
+                              </div>
+                            <div class="d-flex justify-content-start">
+                                <button type="submit" class="btn btn-success px-5 py-3 my-2">Login</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

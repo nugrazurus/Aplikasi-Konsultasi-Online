@@ -56,7 +56,9 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
           const data = response.result[0];
           data.role = 'mahasiswa';
           delete data.passwd;
-          res.cookie('AuthToken', generateToken(data));
+          const date = new Date();
+          date.setDate(date.getDate() + 1);
+          res.cookie('AuthToken', generateToken(data), { expires: date, sameSite: 'lax' });
           res.redirect('mahasiswa');
         } else {
           res.status(403).render('login', { message: 'Username atau password anda salah' });
