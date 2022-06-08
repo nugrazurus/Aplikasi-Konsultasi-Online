@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { loginSiakadDosen, loginSiakadMahasiswa } from '../service/siakad';
+import { getEmailDosen, getEmailMahasiswa } from '../service/googleCalendar';
 
 interface User {
   idmhs: number;
@@ -55,6 +56,7 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
         if (response.result[0].idmhs !== '0') {
           const data = response.result[0];
           data.role = 'mahasiswa';
+          data.email = await getEmailMahasiswa(username);
           delete data.passwd;
           const date = new Date();
           date.setDate(date.getDate() + 1);
@@ -71,6 +73,7 @@ export const loginServerSide = async (req: Request, res: Response): Promise<void
         }
         if (response.result[0].stat !== 'gagal') {
           const data = response.result[0];
+          data.email = getEmailDosen(username);
           data.nip = username;
           data.role = 'dosen';
           res.cookie('AuthToken', generateToken(data));

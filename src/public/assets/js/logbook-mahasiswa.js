@@ -67,6 +67,8 @@ function getAllSesi() {
 }
 
 function showLogbook(id) {
+  $('#tambahLogbook').removeClass('d-none');
+  $('.col-9').find('p').addClass('d-none');
   idLogbook = id;
   const button = $('.button-sesi');
   $.each(button, function (key, val) {
@@ -82,41 +84,46 @@ function showLogbook(id) {
     headers: { Authorization: `Bearer ${token}` },
   })
     .done(function (data) {
-      if (data.data.notes.title !== null) {
-        $('#buttonMasalah').hide();
-        $('input[name="titleMasalah"]').val(data.data.notes.title).attr('disabled', true);
-        $('textarea[name="contentMasalah"]').val(data.data.notes.content).attr('disabled', true);
-      } else {
-        $('#buttonMasalah').show();
-        $('input[name="titleMasalah"]').val('').attr('disabled', false);
-        $('textarea[name="contentMasalah"]').val('').attr('disabled', false);
-      }
-      if (data.data.actions.content !== null) {
-        $('input[name="contentAction"]').val(data.data.actions.content);
-      } else {
-        $('input[name="contentAction"]').val('');
-      }
-      if (data.data.attachments.file !== null) {
-        $('#formLampiran').hide();
-        $('#iframepdf')
-          .show()
-          .html(
-            `<object data="/storage/${data.data.attachments.file}" type="application/pdf" width="100%" height="500px"><iframe src="https://docs.google.com/viewer?url=/storage/${data.data.attachments.file}&embedded=true" width="100%"></iframe></object>`,
-          );
-      } else {
-        $('#formLampiran').show();
-        $('#iframepdf').hide().html('');
-      }
+      console.log(data.data.notes);
+      const notes = data.data.notes.map(
+        (note, ind) =>
+          `<div class="accordion-item mb-4">
+        <h2 class="accordion-header" id="heading-${ind}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapse-${ind}" aria-expanded="false" aria-controls="collapse-${ind}">
+            <b>${note.title}</b>
+          </button>
+        </h2>
+        <div id="collapse-${ind}" class="accordion-collapse collapse ${
+            ind === 0 ? 'show' : ''
+          }" aria-labelledby="heading-${ind}">
+          <div class="accordion-body">
+            <div class="d-flex flex-column">
+              <div class="d-flex justify-content-end">
+                <button onClick="" class="btn btn-danger" ><span class="iconly-Delete icli"></span></button>
+              </div>
+              <div class="form-group">
+                <label for="">Catatan</label>
+                <textarea class="form-control mb-2" name="contentMasalah" rows="4" disabled>${note.content}</textarea>
+              </div>
+              ${
+                note.attachments.file
+                  ? `<a href="/storage/${note.attachments.file}" target="_blank" class="btn btn-primary">Lampiran</a>`
+                  : ''
+              }
+            </div>
+          </div>
+        </div>
+      </div>`,
+      );
+      $('#accordionExample').html(notes);
+      $('#buttonMeet').html(
+        `<a class="btn btn-primary d-flex align-items-center" href="${data.data.meetLink}" target="_blank"><span class="iconly-Video icli"></span>  Google Meet</a>`,
+      );
       console.log(data);
     })
     .fail(function (err, jQxHr, status) {
-      Swal.fire({
-        title: 'Gagal menambahkan data',
-        text: err.textStatus,
-        icon: 'error',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
+      showAlert('Gagal menambahkan data', err.textStatus, 'error');
       console.log(err);
     });
 }
@@ -130,6 +137,7 @@ function submitForm() {
     nipDosen: nipDosen,
   };
   console.log(data);
+  $('#simpanSesiKonsultasi').attr('disabled', true);
   $.ajax({
     method: 'POST',
     url: `/api/logbook`,
@@ -143,100 +151,30 @@ function submitForm() {
       console.log(data);
       modalTambah.modal('hide');
       getAllSesi();
-      Swal.fire({
-        title: 'Berhasil menambahkan data',
-        text: '',
-        icon: 'success',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
+      $('#simpanSesiKonsultasi').attr('disabled', false);
+      showAlert('Berhasil menambahkan data', '', 'success');
     })
     .fail((err) => {
       console.log(err);
-      Swal.fire({
-        title: 'Server Error',
-        text: err.statusText,
-        icon: 'error',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
-      alert(err.statusText);
+      showAlert('Server Error', err.statusText, 'error');
     });
 }
 
-$('#formMasalah').submit(function (e) {
+$('#formNotes').submit(function (e) {
   e.preventDefault();
-  console.log('submit form masalah');
-  if (idLogbook === '') {
-    Swal.fire({
-      title: 'Silahkan pilih sesi',
-      text: '',
-      icon: 'warning',
-      confirmButtonText: 'Tutup',
-      timer: 1500,
-    });
-    return;
-  }
-  const data = {
-    notes: {
-      title: $('input[name="titleMasalah"]').val(),
-      content: $('textarea[name="contentMasalah"]').val(),
-    },
-  };
-  console.log(data);
-  $.ajax({
-    method: 'PUT',
-    url: `/api/logbook/${idLogbook}`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    data: JSON.stringify(data),
-  })
-    .done(function (data) {
-      console.log(data);
-      Swal.fire({
-        title: 'Berhasil input masalah',
-        text: '',
-        icon: 'success',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
-      getAllSesi();
-      showLogbook(data.data._id);
-    })
-    .fail(function (error) {
-      console.log(error);
-      Swal.fire({
-        title: 'Server Error',
-        text: error.statusText,
-        icon: 'error',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
-    });
-});
-
-$('#formLampiran').submit(function (e) {
-  e.preventDefault();
-  if (idLogbook === '') {
-    Swal.fire({
-      title: 'Silahkan pilih sesi',
-      text: '',
-      icon: 'warning',
-      confirmButtonText: 'Tutup',
-      timer: 1500,
-    });
-    return;
-  }
   let form = $(this);
+  console.log(form);
   let formData = new FormData(form[0]);
   for (let pair of formData.entries()) {
     console.log(pair[0] + ', ' + pair[1]);
   }
+  if (!idLogbook) {
+    showAlert('Peringatan', 'Pilih sesi konsultasi terlebih dahulu', 'warning');
+    return;
+  }
   $.ajax({
     method: 'PUT',
-    url: `/api/logbook/${idLogbook}`,
+    url: `/api/logbook/note/${idLogbook}`,
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -248,29 +186,13 @@ $('#formLampiran').submit(function (e) {
     data: formData,
   })
     .done(function (data) {
-      data = JSON.parse(data);
+      console.log('done submitting');
       console.log(data);
-      form[0].reset();
-      Swal.fire({
-        title: 'Berhasil menambahkan lampiran',
-        text: '',
-        icon: 'success',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
-      getAllSesi();
-      showLogbook(data.data._id);
-      console.log('berhasil menampilkan data');
+      showAlert('Berhasil menambahkan logbook', '', 'success');
     })
-    .fail(function (err) {
+    .fail((err) => {
       console.error(err);
-      Swal.fire({
-        title: 'Gagal menambahkan lampiran',
-        text: err.textStatus,
-        icon: 'error',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
+      showAlert('Gagal menambahkan lampiran', err.textStatus, 'error');
     });
 });
 
@@ -286,21 +208,21 @@ function hapusSesi(id) {
     .done(function (data) {
       console.log(data);
       getAllSesi();
-      Swal.fire({
-        title: 'Berhasil menghapus sesi',
-        text: '',
-        icon: 'success',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
+      showAlert('Berhasil menghapus sesi', '', 'success');
     })
     .fail(function (err) {
-      Swal.fire({
-        title: 'Gagal menghapus sesi',
-        text: err.statusText,
-        icon: 'error',
-        confirmButtonText: 'Tutup',
-        timer: 1500,
-      });
+      console.error(err);
+      showAlert('Gagal menghapus sesi', err.statusText, 'error');
     });
+}
+
+function showAlert(title, text, icon, buttontext = 'Tutup', timer = 1500) {
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: icon,
+    confirmButtonText: buttontext,
+    timer: timer,
+  });
+  return;
 }

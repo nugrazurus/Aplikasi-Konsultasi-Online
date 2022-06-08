@@ -59,32 +59,33 @@
                       <p>Sesi Ke-1</p>
                     </div> -->
                   </div>
-                  <div class="accordion" id="accordionExample">
-                    <div class="accordion-item mb-4">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                          data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          <b>Notes / Masalah</b>
-                        </button>
-                      </h2>
-                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
-                        <div class="accordion-body">
-                          <form id="formMasalah" action="#" method="POST">
-                            <label for="">Judul</label>
-                            <input type="text" name="titleMasalah" value="" class="form-control mb-2"
-                              placeholder="Tulis judul dari catatan atau kendala anda disini">
-                            <label for="">Notes / Masalah</label>
-                            <textarea class="form-control" name="contentMasalah" rows="4"
-                              placeholder="Tulis catatan atau kendala anda disini"></textarea>
-                            <div class="d-flex w-100 justify-content-end">
-                              <button type="submit" id="buttonMasalah" class="btn btn-primary px-3 my-2"><span
-                                  class="iconly-Send icli"></span></button>
-                            </div>
-                          </form>
+                  <p>Pilih Sesi dahulu</p>
+                  <div id="buttonMeet" class="d-flex mb-2"></div>
+                  <div class="d-none" id="tambahLogbook">
+                    <h4>Tambah Logbook</h4>
+                    <div class="card p-4 mb-4">
+                      <form action="#" id="formNotes" method="post">
+                        <div class="form-group mb-2">
+                          <label for="">Judul</label>
+                          <input class="form-control" type="text" name="titleMasalah" required>
                         </div>
-                      </div>
+                        <div class="form-group mb-2">
+                          <label for="">Catatan</label>
+                          <textarea class="form-control" name="contentMasalah" id="" cols="30" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group mb-2">
+                          <label for="">Lampiran</label>
+                          <input class="form-control" type="file" name="lampiran">
+                        </div>
+                        <div class="d-flex flex-row justify-content-end mt-2">
+                          <button class="btn btn-primary px-4" type="submit"><span class="iconly-Send icli"></span></button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="accordion-item mb-4">
+                  </div>
+                  <div class="accordion" id="accordionExample" style="overflow-y: auto; max-height: 500px;">
+
+                    <!-- <div class="accordion-item mb-4">
                       <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                           data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -97,8 +98,8 @@
                             placeholder="hal yang harus anda lakukan" disabled></textarea>
                         </div>
                       </div>
-                    </div>
-                    <div class="accordion-item mb-4">
+                    </div> -->
+                    <!-- <div class="accordion-item mb-4">
                       <h2 class="accordion-header" id="headingThree">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                           data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -123,7 +124,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -154,8 +155,8 @@
       </div>
     </div>
     <%- include('../_partial/include_js') %>
-    <%- include('../_partial/mahasiswa_js') %>
-    <script src="/static/assets/js/logbook-mahasiswa.js"></script>
+      <%- include('../_partial/mahasiswa_js') %>
+        <script src="/static/assets/js/logbook-mahasiswa.js"></script>
   </body>
 
   </html>
