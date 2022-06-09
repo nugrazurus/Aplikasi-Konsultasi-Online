@@ -1,10 +1,10 @@
 
-<%- include('_partial/head', {title: 'Dashboard'}); %>
+<%- include('../_partial/head', {title: 'Dashboard'}); %>
 <body>
     <div class="d-flex flex-row main">
-        <%- include('_partial/sidebar'); %>
+        <%- include('../_partial/sidebar'); %>
         <div class="container-fluid mx-4 my-4">
-            <%- include('_partial/navbar', {title: 'Dashboard', tanggal: tanggal}); %>
+            <%- include('../_partial/navbar', {title: 'Dashboard', tanggal: tanggal}); %>
             <div class="d-flex flex-column mb-4 bimbingan">
                 <p class="title">Mahasiswa Bimbingan</p>
                 <p class="text-muted mb-2">Berikut adalah semua mahasiswa bimbingan anda</p>

@@ -18,7 +18,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
       res.status(500).json(mhs);
     }
     mhs = mhs.slice(0, 5);
-    res.render('index', { mhs: mhs, angkatan: countAngkatan });
+    res.render('dosen/index', { mhs: mhs, angkatan: countAngkatan });
   } catch (error) {
     console.error(error);
     res.status(500).render('_500');
@@ -33,7 +33,7 @@ export const logbook = async (req: Request, res: Response): Promise<void> => {
     if (mhs.length < 1) {
       res.status(500).json(mhs);
     }
-    res.render('logbook', { mhs: mhs });
+    res.render('dosen/logbook', { mhs: mhs });
   } catch (error) {
     console.error(error);
     res.status(500).render('_500');
@@ -46,7 +46,7 @@ export const logbookDetail = async (req: Request, res: Response): Promise<void> 
     const { payload } = jwt.decode(req.cookies.AuthToken, { complete: true });
     const { iddosen } = payload.data;
     const mhs = await getMhs(nim, iddosen);
-    res.render('logbook-detail', { mhs: mhs });
+    res.render('dosen/logbook-detail', { mhs: mhs });
   } catch (error) {
     console.error(error);
     res.status(500).render('_500');

@@ -1,0 +1,341 @@
+<%- include('../_partial/head', {title: 'Detail Logbook' }) %>
+
+  <body>
+    <div class="d-flex flex-row main">
+      <%- include('../_partial/sidebar') %>
+        <div class="container-fluid mx-4 my-4">
+          <%- include('../_partial/navbar', {title: 'Logbook' , tanggal: tanggal}) %>
+            <div class="d-flex flex-column mb-4">
+              <p class="title">Logbook <%- mhs.nama %>
+              </p>
+              <p class="text-muted mb-2">Berikut adalah data logbook untuk mahasiswa <%- mhs.nama %>
+              </p>
+              <div class="row">
+                <div class="col-3">
+                  <div class="d-flex flex-column w-100 align-items-center px-4 py-4 mb-4"
+                    style="color: white; background-color: #48C39F; border-radius: 10px;">
+                    <div class="d-flex justify-content-center align-items-center rounded-circle"
+                      style="width: 120px; height: 120px; background-color: white;">
+                      <div class="image-cropper" style="width: 116px; height: 116px;">
+                        <img class="mb-2 " style="width: 116px;" src="/pic/<%- mhs.nim %> " alt="">
+                      </div>
+                    </div>
+                    <p style="margin: 0; font-weight: 600;">
+                      <%- mhs.nama %>
+                    </p>
+                    <p style="margin: 0;">
+                      <%- mhs.nim %>
+                    </p>
+                    <p style="margin: 0;">Angkatan <%- mhs.angkatan %>
+                    </p>
+                  </div>
+                  <div class="card d-flex flex-column px-4 py-4 w-100" style="max-height: 400px; overflow-y: auto;">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                      <p class="title">Tabel Konsultasi</p>
+                      <button onclick="show()" class="btn" style="color: #48C39F;">+ Tambah</button>
+                    </div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Sesi</th>
+                          <th>Tanggal</th>
+                          <th>#</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- <tr>
+                                        <td>Ke - 1</td>
+                                        <td>4 Oktober 2021</td>
+                                        <td>
+                                          <div class="btn-group">
+                                            <button type="button" class="btn btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                                              <span class="iconly-Setting icli" style="color: #48C39F;"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                              <li><a class="dropdown-item" href="#">Edit</a></li>
+                                              <li><a class="dropdown-item" href="#">Hapus</a></li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                    </tr> -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-9">
+                  <div class="d-flex mb-4" id="buttonSesi">
+                    <!-- <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                                <a href="#" class="stretched-link">Sesi Ke-1</a>
+                            </div>
+                            <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                                <p>Sesi Ke-1</p>
+                            </div>
+                            <div class="card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                                <p>Sesi Ke-1</p>
+                            </div> -->
+                  </div>
+                  <p>Pilih Sesi dahulu</p>
+                  <div id="buttonMeet" class="d-flex mb-2"></div>
+                  <!-- <div class="d-none" id="tambahLogbook">
+                    <h4>Tambah Logbook</h4>
+                    <div class="card p-4 mb-4">
+                      <form action="#" id="formNotes" method="post">
+                        <div class="form-group mb-2">
+                          <label for="">Judul</label>
+                          <input class="form-control" type="text" name="titleMasalah" required>
+                        </div>
+                        <div class="form-group mb-2">
+                          <label for="">Rincian Aktivitas</label>
+                          <textarea class="form-control" name="contentMasalah" id="" cols="30" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group mb-2">
+                          <label for="">Lampiran</label>
+                          <input class="form-control" type="file" name="lampiran">
+                        </div>
+                        <div class="d-flex flex-row justify-content-end mt-2">
+                          <button class="btn btn-primary px-4" type="submit"><span class="iconly-Send icli"></span></button>
+                        </div>
+                      </form>
+                    </div>
+                  </div> -->
+                  <div class="accordion" id="accordionExample" style="overflow-y: auto; max-height: 500px;">
+                    <!-- <div class="accordion-item mb-4">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          <b>Notes / Masalah</b>
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                        <div class="accordion-body">
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                            placeholder="Tulis catatan atau kendala anda tentang mahasiswa ini disini"></textarea>
+                        </div>
+                      </div>
+                    </div> -->
+                    <!-- <div class="accordion-item mb-4">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <b>Hal Yang Harus Dilakukan</b>
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                        <div class="accordion-body">
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                            placeholder="Tulis hal yang harus dilakukan mahasiswa ini disini"></textarea>
+                          <div class="d-flex w-100 justify-content-end">
+                            <button type="button" class="btn btn-primary px-3 my-2"><span
+                                class="iconly-Send icli"></span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <!-- <div class="accordion-item mb-4">
+                      <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          <b>Lampiran</b>
+                        </button>
+                      </h2>
+                      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                        <div class="accordion-body">
+                          <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
+                          collapse plugin adds the appropriate classes that we use to style each element. These classes
+                          control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                          modify any of this with custom CSS or overriding our default variables. It's also worth noting
+                          that just about any HTML can go within the <code>.accordion-body</code>, though the transition
+                          does limit overflow.
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalTambahSesi" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tambah Sesi Konsultasi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input type="date" name="tanggalSesiKonsultasi" class="form-control" id="floatingInput"
+                placeholder="Pilih Tanggal Untuk Sesi Konsultasi Berikutnya">
+              <label for="floatingInput">Pilih Tanggal Untuk Sesi Konsultasi Berikutnya</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <button id="simpanSesiKonsultasi" onclick="submitForm()" type="button"
+              class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/static/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+    <script src="/static/assets/js/sidebar.js"></script>
+    <script>
+      const modalTambah = $('#modalTambahSesi')
+      let token = document.cookie.match(new RegExp('(^| )' + 'AuthToken' + '=([^;]+)'))[2];
+      token = token.replace('AuthToken=', '');
+
+      $(document).ready(() => {
+        getAllSesi();
+      })
+
+      function show() {
+        modalTambah.modal('show')
+      }
+
+      function getAllSesi() {
+        const nim = '<%- mhs.nim %>';
+        const table = $('.table tbody')
+        const data = $.ajax({
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          url: `/api/logbook/mahasiswa/${nim}`,
+        })
+          .done((data) => {
+            let row = ``;
+            let button = ``;
+            $.each(data.data, (key, val) => {
+              row += `
+            <tr><td>Ke - ${key + 1}</td>
+                <td>${new Date(val.date).toLocaleDateString()}</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span class="iconly-Setting icli" style="color: #48C39F;"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Edit</a></li>
+                      <li><a class="dropdown-item" href="#">Hapus</a></li>
+                    </ul>
+                  </div>
+                </td>
+            </tr>
+            `;
+              button += `
+                <div id="${val._id
+                }" class="button-sesi card d-flex flex-row justify-content-center align-items-center px-4 py-3 mx-2">
+                    <a href="#" onclick="showLogbook('${val._id}')" class="stretched-link">Sesi Ke-${key + 1}</a>
+                </div>
+            `;
+            })
+            table.html(row);
+            $('#buttonSesi').html(button)
+          })
+          .fail((err) => {
+            console.log(err);
+            alert('gagal mengambil data');
+          });
+      }
+
+      function submitForm() {
+        let token = document.cookie;
+        token = token.replace('AuthToken=', '');
+        const data = {
+          namaMahasiswa: '<%- mhs.nama %>',
+          nimMahasiswa: '<%- mhs.nim %>',
+          namaDosen: '<%- user.data.gelardpn %><%- user.data.nama %><%- user.data.gelarblk %>',
+          nipDosen: '<%- user.data.nip %>',
+          date: $('input[name="tanggalSesiKonsultasi"]').val()
+        };
+        $.ajax({
+          method: 'POST',
+          url: `/api/logbook`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify(data),
+        })
+          .done((data) => {
+            console.log(data);
+            modalTambah.modal('hide');
+            getAllSesi();
+            alert('Berhasil Menambahkan data');
+          })
+          .fail((err) => {
+            console.log(err);
+            alert(err.statusText);
+          })
+      }
+
+      function showLogbook(id) {
+        $('#tambahLogbook').removeClass('d-none');
+        $('.col-9').find('p').addClass('d-none');
+        idLogbook = id;
+        const button = $('.button-sesi');
+        $.each(button, function (key, val) {
+          if (val.id === idLogbook) {
+            $(val).css('border', '1px solid #48C39F').children('a').css('color', '#48C39F');
+          } else {
+            $(val).css('border', '1px solid rgba(0,0,0,.125)').children('a').css('color', 'black');
+          }
+        });
+        $.ajax({
+          url: `/api/logbook/${id}`,
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .done(function (data) {
+            console.log(data.data.notes);
+            const notes = data.data.notes.map(
+              (note, ind) =>
+                          `<div class="accordion-item mb-4">
+                  <h2 class="accordion-header" id="heading-${ind}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse-${ind}" aria-expanded="false" aria-controls="collapse-${ind}">
+                      <b>${note.title}</b>
+                    </button>
+                  </h2>
+                  <div id="collapse-${ind}" class="accordion-collapse collapse ${ind === 0 ? 'show' : ''
+                          }" aria-labelledby="heading-${ind}">
+                    <div class="accordion-body">
+                      <div class="d-flex flex-column">
+                        <div class="form-group">
+                          <label for="">Rincian Aktivitas</label>
+                          <textarea class="form-control mb-2" name="contentMasalah" rows="4" disabled>${note.content}</textarea>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                        ${note.actions.content === null ? `<button onclick="tambahCatatan" class="btn btn-primary me-2">Tambah Catatan</button>` : ''}
+                        ${note.attachments.file
+                            ? `<a href="/storage/${note.attachments.file}" target="_blank" class="btn btn-warning">Lampiran</a>`
+                            : ''
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>`,
+            );
+            $('#accordionExample').html(notes);
+            $('#buttonMeet').html(
+              `<a class="btn btn-primary d-flex align-items-center" href="${data.data.meetLink}" target="_blank"><span class="iconly-Video icli"></span>  Google Meet</a>`,
+            );
+            console.log(data);
+          })
+          .fail(function (err, jQxHr, status) {
+            showAlert('Gagal menambahkan data', err.textStatus, 'error');
+            console.log(err);
+          });
+      }
+
+      $('#buttonTambahSesi').click((e) => {
+      })
+    </script>
+  </body>
+
+  </html>

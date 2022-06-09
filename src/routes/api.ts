@@ -12,7 +12,7 @@ router.all('/logbook*', verifyToken);
 router.get('/periodelirs', controller.getPeriodeLirs);
 router.post('/logbook', logbookController.create);
 router.get('/logbook/:id', logbookController.show);
-router.put('/logbook/:id/:note_id', upload.single('lampiran'), logbookController.createNote);
+router.put('/logbook/note/:id', upload.single('lampiran'), logbookController.createNote);
 router.delete('/logbook/:id/:note_id', logbookController.destroyNote);
 // router.put('/logbook/:id', upload.single('lampiran'), logbookController.update);
 router.delete('/logbook/:id', logbookController.destroy);
