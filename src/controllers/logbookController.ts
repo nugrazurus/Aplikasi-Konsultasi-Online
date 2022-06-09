@@ -100,6 +100,8 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     const emailMahasiswa = await getEmailMahasiswa(req.body.nimMahasiswa);
     const emailDosen = await getEmailDosen(req.body.nipDosen);
     const data = req.body;
+    console.log(data);
+    if (data.platform !== 'google-meet') throw new Error('Platform yang tersedia hanya google meet');
     const meetLink = await createEventCalendarGCR({
       timestampMulai: new Date(data.date).getTime(),
       durasi: 120,
@@ -139,7 +141,7 @@ export const createNote = async (req: Request, res: Response): Promise<void> => 
           } else {
             console.log('file successfully saved');
             console.log(req.file.originalname);
-            await update.update({
+            await update.updateOne({
               $push: {
                 notes: {
                   title: req.body.titleMasalah,
@@ -164,7 +166,7 @@ export const createNote = async (req: Request, res: Response): Promise<void> => 
     } else {
       console.log('ndak ade file');
       console.log(req.body);
-      await update.update({
+      await update.updateOne({
         $push: {
           notes: {
             title: req.body.titleMasalah,
@@ -199,8 +201,29 @@ export const createNote = async (req: Request, res: Response): Promise<void> => 
 
 export const destroyNote = async (req: Request, res: Response): Promise<void> => {
   try {
-    const destroy = await Logbook.findOne({ _id: req.params.id, notes: { $elemMatch: { _id: 'asdas' } } });
-  } catch (error) {}
+    const destroy = await Logbook.findOne({ _id: req.params.id });
+    const notes = destroy.toObject().notes;
+    const file = notes.find((elem: any) => elem._id.toString() === req.params.note_id);
+    console.log(file);
+    if (file) {
+      console.log('ada file untuk di delete');
+      fs.rmSync(path.join(__dirname, `../uploads/${file.attachments.file}`), { recursive: true, force: true });
+    }
+    await destroy.updateOne({
+      $pull: {
+        notes: {
+          _id: req.params.note_id,
+        },
+      },
+    });
+    res.json(destroy);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
 };
 
 export const destroy = async (req: Request, res: Response): Promise<void> => {

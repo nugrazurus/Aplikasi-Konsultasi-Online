@@ -11,6 +11,8 @@ interface Logbook {
   nipDosen: string;
   nimMahasiswa: string;
   verified: boolean;
+  meetLink: string;
+  platform: string;
 }
 
 interface Note {
@@ -39,6 +41,7 @@ const logbookSchema: Schema = new Schema(
     nimMahasiswa: { type: String, required: true },
     emailMahasiswa: { type: String, required: true },
     emailDosen: { type: String, required: true },
+    platform: { type: String, required: true },
     meetLink: { type: String, required: true },
     date: { type: Date, required: true },
     notes: [

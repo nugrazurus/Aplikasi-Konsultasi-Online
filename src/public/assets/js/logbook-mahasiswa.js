@@ -99,18 +99,18 @@ function showLogbook(id) {
           }" aria-labelledby="heading-${ind}">
           <div class="accordion-body">
             <div class="d-flex flex-column">
-              <div class="d-flex justify-content-end">
-                <button onClick="" class="btn btn-danger" ><span class="iconly-Delete icli"></span></button>
+            <div class="form-group">
+            <label for="">Rincian Aktivitas</label>
+            <textarea class="form-control mb-2" name="contentMasalah" rows="4" disabled>${note.content}</textarea>
+            </div>
+            <div class="d-flex flex-row justify-content-end">
+            ${
+              note.attachments.file
+                ? `<a href="/storage/${note.attachments.file}" target="_blank" class="btn btn-primary me-2">Lampiran</a>`
+                : ''
+            }
+              <button onClick="hapusNote('${note._id}')" class="btn btn-danger" >Hapus</button>
               </div>
-              <div class="form-group">
-                <label for="">Catatan</label>
-                <textarea class="form-control mb-2" name="contentMasalah" rows="4" disabled>${note.content}</textarea>
-              </div>
-              ${
-                note.attachments.file
-                  ? `<a href="/storage/${note.attachments.file}" target="_blank" class="btn btn-primary">Lampiran</a>`
-                  : ''
-              }
             </div>
           </div>
         </div>
@@ -135,6 +135,7 @@ function submitForm() {
     date: $('input[name="tanggalSesiKonsultasi"]').val(),
     namaDosen: dosen,
     nipDosen: nipDosen,
+    platform: $('select[name="platform"]').val(),
   };
   console.log(data);
   $('#simpanSesiKonsultasi').attr('disabled', true);
@@ -155,8 +156,9 @@ function submitForm() {
       showAlert('Berhasil menambahkan data', '', 'success');
     })
     .fail((err) => {
-      console.log(err);
-      showAlert('Server Error', err.statusText, 'error');
+      console.error(err);
+      $('#simpanSesiKonsultasi').attr('disabled', false);
+      showAlert('Server Error', err.responseJSON?.message, 'error');
     });
 }
 
@@ -189,6 +191,7 @@ $('#formNotes').submit(function (e) {
       console.log('done submitting');
       console.log(data);
       showAlert('Berhasil menambahkan logbook', '', 'success');
+      window.location.reload();
     })
     .fail((err) => {
       console.error(err);
@@ -214,6 +217,28 @@ function hapusSesi(id) {
       console.error(err);
       showAlert('Gagal menghapus sesi', err.statusText, 'error');
     });
+}
+
+function hapusNote(note_id) {
+  const modal = $('#modalHapusNote');
+  modal.modal('show');
+  modal.find('#hapusNote').click(function () {
+    $.ajax({
+      url: `/api/logbook/${idLogbook}/${note_id}`,
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .done(function (data) {
+        window.location.reload();
+        console.log(data);
+      })
+      .fail(function (err) {
+        showAlert('Server Error', err.responseJSON?.message, 'error');
+        console.error(err);
+      });
+  });
 }
 
 function showAlert(title, text, icon, buttontext = 'Tutup', timer = 1500) {
